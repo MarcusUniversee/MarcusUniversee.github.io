@@ -25,7 +25,18 @@
         </div>
         <div class="p-4 m-4">
             <h2 class="font-bold text-2xl">Part 1: Low Resolution JPG images</h2>
-            <p class="text-gray-700">The goal of task is to take two pictures of a face. One without zoom, and one with zoom, but standing further back</p>
+            <p class="text-gray-700">
+                To align the JPG images, I used the method outlined in the spec, using the NCC (Normalized Cross-Correlation)
+                method and exhaustively searching through displacements of -15 to 15. After splitting the image into thirds,
+                the red channel was kept constant to compare blue and green to. The blue and green channels went through the
+                same process, iteratively checking all possible displacements in both the x and y direction, amount to 30x30
+                = 900 total iterations. Each iteration, a displacement (np.roll) and a crop was applied (to remove some of the white edges
+                so it does not just align to the borders). Then, a NCC was calculated. After all 900 iterations, the max NCC
+                score was saved as the displacement and overlayed onto each other. This method was not 100% perfect, but it resulted
+                in pretty good looking images. Parameters such as displacement and crop amount could be fine-tuned, but it
+                would likely be more cost-effective to implement an auto-crop, white-balance, or other methods mentioned in
+                Bells & Whistles for improvement.
+            </p>
         </div>
         <div class="p-4 m-4">
             <h2 class="font-bold text-2xl">Part 2: Architectural Perspective Compression</h2>

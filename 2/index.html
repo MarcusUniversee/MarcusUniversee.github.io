@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>My Portfolio - Project 1</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="flex justify-between items-center px-6 py-4 border-b border-gray-200">
+        <h2 class="text-2xl font-bold text-blue-600">CS180 Portfolio</h1>
+        <ul class="flex gap-6">
+        <li><a href="../index.html" class="hover:text-blue-600 transition">Home</a></li>
+        <li><a href="../0/index.html" class="hover:text-blue-600 transition">Project 0</a></li>
+        <li><a href="../1/index.html" class="hover:text-blue-600 transition">Project 1</a></li>
+        <li><a href="#" class="hover:text-blue-600 transition">Project 2</a></li>
+        </ul>
+    </nav>
+    <div class="m-8">
+        <div class="p-6 border-gray-400 bg-blue-600 rounded-lg m-6">
+            <h1 class="text-white text-4xl md:text-5xl font-bold text-center">Project 1: Fun with Filters and Frequencies!</h1>
+        </div>
+        <p class="text-gray-700">
+                In this project, we explore filters and convolutions, looking to apply them in unique ways to change images or blend images together.
+        </p>
+        <div class="p-4 m-4">
+            <h2 class="font-bold text-2xl">Part 1: Fun with Filters</h2>
+            <h3 class="font-bold text-xl">Part 1.1: Convolutions from Scratch!</h3>
+            <p class="text-gray-700">
+                In this section, I use three filters on a picture of myself: a 9x9 box filter, 
+                a finite difference filter in the x direction,
+                and a finite difference filter in the y direction. To apply a convolutions, 
+                (1) padding must be added to the edges of the image to keep 
+                the output image the same size (filled with zeros),
+                (2) the filter must be flipped,
+                (3) the filter must be multiplied by a window over every pixel in the image.
+                We do this for all three filters, with implemntation in two different ways:
+                
+                <ol>
+                    <li>
+                        Using four for loops. This loops through every index in the image, as well as
+                        every index in the flipped filter to individual multiply each element.
+                    </li>
+                    <li>
+                        Using two for loops. This only loops through every index in the image,
+                        and "cuts" a window out of the image, then performs a dot product with
+                        the flipped filter with the window.
+                    </li>
+                </ol>
+
+                This is essentially the same as scipy's convolve method, but scipy has
+                different parameters that can be selected. Setting the mode to "same"
+                pads just enough so that the output image is the same size.
+            </p>
+            <section class="flex justify-center gap-8 py-12">
+
+            <div class="text-center w-1/4">
+                <img src="../images/marcusbox2.png"
+                    alt="Cathedral"
+                    class="rounded-lg shadow-md" />
+                <p class="mt-2 text-sm text-gray-700">
+                    The 9x9 box filter is simply a 9x9 2d matrix with a value of 1/(N*N) for each cell,
+                    or 1/81.
+                </p>
+            </div>
+
+            <div class="text-center w-1/4">
+                <img src="../images/marcusdx2.png"
+                    alt="monastary"
+                    class="rounded-lg shadow-md" />
+                <p class="mt-2 text-sm text-gray-700">
+                    The dx filter displays all horizontal edges.
+                </p>
+            </div>
+
+            <div class="text-center w-1/4">
+                <img src="../images/marcusdy2.png"
+                    alt="monastary"
+                    class="rounded-lg shadow-md" />
+                <p class="mt-2 text-sm text-gray-700">
+                    The dy filter displays all horizontal edges.
+                </p>
+            </div>
+            </section>
+            <h3 class="font-bold text-xl">Part 1.2: Finite Difference operator!</h3>
+            <p class="text-gray-700">
+                This section reuses the finite difference operators (dx and dy) to create a gradient
+                magnitude image. To create the gradient magnitude image, we can first convolve dx and dy,
+                then convolve that with the image.
+
+                We then create a binarized edge image by specifying a threshold, only allowing 
+                magnitudes that are at least a specific value to only allow edges through.
+            </p>
+            <section class="flex justify-center gap-8 py-12">
+
+                <div class="text-center w-1/4">
+                    <img src="../images/cameraman.png"
+                        alt="Cathedral"
+                        class="rounded-lg shadow-md" />
+                    <p class="mt-2 text-sm text-gray-700">
+                        The original cameraman picture
+                    </p>
+                </div>
+                
+                <div class="text-center w-1/4">
+                    <img src="../images/cameramandx.png"
+                        alt="Cathedral"
+                        class="rounded-lg shadow-md" />
+                    <p class="mt-2 text-sm text-gray-700">
+                        dx filter
+                    </p>
+                </div>
+
+                <div class="text-center w-1/4">
+                    <img src="../images/cameramandy.png"
+                        alt="monastary"
+                        class="rounded-lg shadow-md" />
+                    <p class="mt-2 text-sm text-gray-700">
+                        dy filter
+                    </p>
+                </div>
+
+            </section>
+            <section class="flex justify-center gap-8 py-12">
+
+                <div class="text-center w-1/3">
+                    <img src="../images/cameramand.png"
+                        alt="monastary"
+                        class="rounded-lg shadow-md" />
+                    <p class="mt-2 text-sm text-gray-700">
+                        Both dx and dy
+                    </p>
+                </div>
+                <div class="text-center w-1/3">
+                    <img src="../images/cameramandbinary.png"
+                        alt="monastary"
+                        class="rounded-lg shadow-md" />
+                    <p class="mt-2 text-sm text-gray-700">
+                        dx and dy, then binarized
+                    </p>
+                </div>
+            </section>
+            <h3 class="font-bold text-xl">Part 1.3: Derivative of Gaussian (DoG) Filter</h3>
+            <p class="text-gray-700">
+                This section is the same as the last one, except with an additional gaussian blur.
+                This removes all the extra edge noise from the previous part. Just like the last part,
+                we can convolve the filters with each other before convolving to the image, but the
+                output would be the same if we did each convolutions one at a time.
+            </p>
+            <section class="flex justify-center gap-8 py-12">
+
+                <div class="text-center w-1/4">
+                    <img src="../images/cameramandx_gauss.png"
+                        alt="monastary"
+                        class="rounded-lg shadow-md" />
+                    <p class="mt-2 text-sm text-gray-700">
+                        Gaussian and dx filter
+                    </p>
+                </div>
+                <div class="text-center w-1/4">
+                    <img src="../images/cameramand_gauss_single.png"
+                        alt="monastary"
+                        class="rounded-lg shadow-md" />
+                    <p class="mt-2 text-sm text-gray-700">
+                        Gaussian, dx, and dy
+                    </p>
+                </div>
+                <div class="text-center w-1/4">
+                    <img src="../images/cameramandbinary_gauss_single.png"
+                        alt="monastary"
+                        class="rounded-lg shadow-md" />
+                    <p class="mt-2 text-sm text-gray-700">
+                        Gaussian, dx, and dy, then binarized
+                    </p>
+                </div>
+            </section>
+        </div>
+        
+        <div class="p-4 m-4">
+            <h2 class="font-bold text-2xl">Part 2: Fun with Frequencies!</h2>
+            <h3 class="font-bold text-xl">Part 2.1:  "Image "Sharpening"</h3>
+            <p class="text-gray-700">
+                In this section, we amplify the high frequencies of an image to sharpen it.
+                To obtain the high frequencies, we can subtract the original image by the
+                blurred image (which is are the low frequencies). Then, we can readd the high frequencies
+                to the image, effectively doubling the magnitude of the high frequencies.
+
+                I do this for the given image of the Taj Mahal, in addition to a few images I selected.
+            </p>
+
+            <section class="flex justify-center gap-8 py-12">
+
+                <div class="text-center w-1/5">
+                    <img src="../images/taj.png"
+                        alt="monastary"
+                        class="rounded-lg shadow-md" />
+                    <p class="mt-2 text-sm text-gray-700">
+                        Original
+                    </p>
+                </div>
+                <div class="text-center w-1/5">
+                    <img src="../images/taj_high.png"
+                        alt="monastary"
+                        class="rounded-lg shadow-md" />
+                    <p class="mt-2 text-sm text-gray-700">
+                        High filter
+                    </p>
+                </div>
+                <div class="text-center w-1/5">
+                    <img src="../images/taj_low.png"
+                        alt="monastary"
+                        class="rounded-lg shadow-md" />
+                    <p class="mt-2 text-sm text-gray-700">
+                        Low filter
+                    </p>
+                </div>
+                <div class="text-center w-1/5">
+                    <img src="../images/sharpened_taj.png"
+                        alt="monastary"
+                        class="rounded-lg shadow-md" />
+                    <p class="mt-2 text-sm text-gray-700">
+                        Sharpened
+                    </p>
+                </div>
+            </section>
+
+            <section class="flex justify-center gap-8 py-12">
+
+                <div class="text-center w-1/5">
+                    <img src="../images/sphinx.png"
+                        alt="monastary"
+                        class="rounded-lg shadow-md" />
+                    <p class="mt-2 text-sm text-gray-700">
+                        Original
+                    </p>
+                </div>
+                <div class="text-center w-1/5">
+                    <img src="../images/sharpened_sphinx.png"
+                        alt="monastary"
+                        class="rounded-lg shadow-md" />
+                    <p class="mt-2 text-sm text-gray-700">
+                        Sharpened
+                    </p>
+                </div>
+                <div class="text-center w-1/5">
+                    <img src="../images/parthenon.png"
+                        alt="monastary"
+                        class="rounded-lg shadow-md" />
+                    <p class="mt-2 text-sm text-gray-700">
+                        Original
+                    </p>
+                </div>
+                <div class="text-center w-1/5">
+                    <img src="../images/sharpened_parthenon.png"
+                        alt="monastary"
+                        class="rounded-lg shadow-md" />
+                    <p class="mt-2 text-sm text-gray-700">
+                        Sharpened
+                    </p>
+                </div>
+            </section>
+
+            <section class="flex justify-center gap-8 py-12">
+
+                <div class="text-center w-1/5">
+                    <img src="../images/young.jpg"
+                        alt="monastary"
+                        class="rounded-lg shadow-md" />
+                    <p class="mt-2 text-sm text-gray-700">
+                        Original
+                    </p>
+                </div>
+                <div class="text-center w-1/5">
+                    <img src="../images/sharpened_young.jpg"
+                        alt="monastary"
+                        class="rounded-lg shadow-md" />
+                    <p class="mt-2 text-sm text-gray-700">
+                        Sharpened
+                    </p>
+                </div>
+                <div class="text-center w-1/5">
+                    <img src="../images/colosseum.png"
+                        alt="monastary"
+                        class="rounded-lg shadow-md" />
+                    <p class="mt-2 text-sm text-gray-700">
+                        Original
+                    </p>
+                </div>
+                <div class="text-center w-1/5">
+                    <img src="../images/sharpened_colosseum.png"
+                        alt="monastary"
+                        class="rounded-lg shadow-md" />
+                    <p class="mt-2 text-sm text-gray-700">
+                        Sharpened
+                    </p>
+                </div>
+            </section>
+
+            <h3 class="font-bold text-xl">Part 2.2: Hybrid Images</h3>
+            <p class="text-gray-700">
+                In this section, we combine the high frequencies of one image with the low frequencies
+                of another images. This results in one image being more visible up close (the high frequencies),
+                whereas the other image (low frequencies) are more visible from far away. To do this,
+                we first align the two images so that they overlay each other, then do a high pass filter
+                (original - gaussian) on one, and a low pass filter (gaussian) on the other. After that, it
+                is just about tuning the different sigma values for the gaussians.
+
+                To gain more intuition, for one set of images, I plotted the Fourier Transform, displaying the
+                frequencies of the image before and after.
+
+                We will show the full process for one set of images (Derek and Nutmeg), 
+                but just the final result of the others. Derek was chosen to be the low
+                frequency with the cutoff frequency of sigma = 7. Nutmeg was chosen to 
+                be the high frequency with the cutoff frequency of sigma = 11
+            </p>
+
+            <section class="flex justify-center gap-8 py-12">
+
+                <div class="text-center w-1/6">
+                    <img src="../images/DerekPicture.jpg"
+                        alt="monastary"
+                        class="rounded-lg shadow-md" />
+                    <p class="mt-2 text-sm text-gray-700">
+                        Original
+                    </p>
+                </div>
+                <div class="text-center w-1/4">
+                    <img src="../images/nutmeg.jpg"
+                        alt="monastary"
+                        class="rounded-lg shadow-md" />
+                    <p class="mt-2 text-sm text-gray-700">
+                        Original
+                    </p>
+                </div>
+            </section>
+
+            <section class="flex justify-center gap-8 py-12">
+
+                <div class="text-center w-1/6">
+                    <img src="../images/nutmegHigh.jpg"
+                        alt="monastary"
+                        class="rounded-lg shadow-md" />
+                    <p class="mt-2 text-sm text-gray-700">
+                        Nutmeg (a cat) as a high frequency
+                    </p>
+                </div>
+                <div class="text-center w-1/6">
+                    <img src="../images/DerekLow.jpg"
+                        alt="monastary"
+                        class="rounded-lg shadow-md" />
+                    <p class="mt-2 text-sm text-gray-700">
+                        Derek (a human) as a low frequency
+                    </p>
+                </div>
+                <div class="text-center w-1/6">
+                    <img src="../images/nutmegDerekHybrid.jpg"
+                        alt="monastary"
+                        class="rounded-lg shadow-md" />
+                    <p class="mt-2 text-sm text-gray-700">
+                        Hybrid Image
+                    </p>
+                </div>
+                <div class="text-center w-1/3">
+                    <img src="../images/fft.png"
+                        alt="monastary"
+                        class="rounded-lg shadow-md" />
+                    <p class="mt-2 text-sm text-gray-700">
+                        The Fourier transforms. Notice that for the lower frequency images,
+                        there are much less dots far from the center (except the cross which
+                        is likely due to the edges of the image). Meanwhile, the high frequencies
+                        are completely spread out.
+                    </p>
+                </div>
+            </section>
+
+            <section class="flex justify-center gap-8 py-12">
+
+                <div class="text-center w-1/5">
+                    <img src="../images/mikesullyHybrid.png"
+                        alt="monastary"
+                        class="rounded-lg shadow-md" />
+                    <p class="mt-2 text-sm text-gray-700">
+                        Mike and Sully from Monsters Inc Hybrid
+                    </p>
+                </div>
+                <div class="text-center w-1/5">
+                    <img src="../images/elphabagalindaHybrid.png"
+                        alt="monastary"
+                        class="rounded-lg shadow-md" />
+                    <p class="mt-2 text-sm text-gray-700">
+                        Elphaba and Galinda from Wicked Hybrid
+                    </p>
+                </div>
+            </section>
+
+            <h3 class="font-bold text-xl">Part 2.3 and 2.4: Multi-resolution Blending and the Oraple journey</h3>
+            <p class="text-gray-700">
+                In this section, we gently seam two images together with gaussian and laplacian stacks.
+                Laplacian stacks are essentially a group of bandpass filtered images. These
+                are created by subtracting gaussian images of increasing blur with each other,
+                obtaining specific intervals of frequencies. Rather than just seam the image itself,
+                it looks much better when every image in a laplacian image or stack are seamed, then all
+                collapsed back into a single image (plus the blurriest gaussian image to get the lowest frequencies). 
+                This will be demonstrated with the oraple a blend between an orange and apple.
+
+                To do the individual blending, we create a mask to apply on each image. This mask specifies
+                the degree of magnitude of the pixels at each point in the image. An example of this
+                would be keeping the left 1/3 of an image as original, the middle 1/3 slowly decreasing in
+                magnitude, and the right 1/3 completely black. This is exactly what we do for the oraple.
+                We specify these three regions to make the apple appear more on the left and the orange
+                on the right, with a gradual transition in the center
+
+                Below, we will visualize this whole process for the Oraple, then show two more examples
+                of irregular masks (circular)
+            </p>
+
+            <section class="flex justify-center gap-8 py-12">
+
+                <div class="text-center w-1/5">
+                    <img src="../images/orange.jpeg"
+                        alt="monastary"
+                        class="rounded-lg shadow-md" />
+                    <p class="mt-2 text-sm text-gray-700">
+                        Original Orange
+                    </p>
+                </div>
+                <div class="text-center w-1/5">
+                    <img src="../images/apple.jpeg"
+                        alt="monastary"
+                        class="rounded-lg shadow-md" />
+                    <p class="mt-2 text-sm text-gray-700">
+                        Original Apple
+                    </p>
+                </div>
+            </section>
+
+            <section class="flex justify-center gap-8 py-2">
+                <div class="text-center w-1/6">
+                    <img src="../images/stack0.jpg"
+                        alt="monastary"
+                        class="rounded-lg shadow-md" />
+                    <p class="mt-2 text-sm text-gray-700">
+                        sigma = 1
+                    </p>
+                </div>
+                <div class="text-center w-1/6">
+                    <img src="../images/stack1.jpg"
+                        alt="monastary"
+                        class="rounded-lg shadow-md" />
+                    <p class="mt-2 text-sm text-gray-700">
+                        sigma = 2
+                    </p>
+                </div>
+                <div class="text-center w-1/6">
+                    <img src="../images/stack2.jpg"
+                        alt="monastary"
+                        class="rounded-lg shadow-md" />
+                    <p class="mt-2 text-sm text-gray-700">
+                        sigma = 4
+                    </p>
+                </div>
+                <div class="text-center w-1/6">
+                    <img src="../images/stack3.jpg"
+                        alt="monastary"
+                        class="rounded-lg shadow-md" />
+                    <p class="mt-2 text-sm text-gray-700">
+                        sigma = 8
+                    </p>
+                </div>
+                <div class="text-center w-1/6">
+                    <img src="../images/stack4.jpg"
+                        alt="monastary"
+                        class="rounded-lg shadow-md" />
+                    <p class="mt-2 text-sm text-gray-700">
+                        sigma = 16
+                    </p>
+                </div>
+            </section>
+            <p class="text-center">The Gaussian for the Apple</p>
+            <section class="flex justify-center gap-8 py-12">
+
+                <div class="text-center w-1/6">
+                    <img src="../images/lstack0.jpg"
+                        alt="monastary"
+                        class="rounded-lg shadow-md" />
+                    <p class="mt-2 text-sm text-gray-700">
+                        
+                    </p>
+                </div>
+                <div class="text-center w-1/6">
+                    <img src="../images/lstack1.jpg"
+                        alt="monastary"
+                        class="rounded-lg shadow-md" />
+                    <p class="mt-2 text-sm text-gray-700">
+                        
+                    </p>
+                </div>
+                <div class="text-center w-1/6">
+                    <img src="../images/lstack2.jpg"
+                        alt="monastary"
+                        class="rounded-lg shadow-md" />
+                    <p class="mt-2 text-sm text-gray-700">
+                        The Laplacian Stack for the apple
+                    </p>
+                </div>
+                <div class="text-center w-1/6">
+                    <img src="../images/lstack3.jpg"
+                        alt="monastary"
+                        class="rounded-lg shadow-md" />
+                    <p class="mt-2 text-sm text-gray-700">
+                        
+                    </p>
+                </div>
+                <div class="text-center w-1/6">
+                    <img src="../images/lstack4.jpg"
+                        alt="monastary"
+                        class="rounded-lg shadow-md" />
+                    <p class="mt-2 text-sm text-gray-700">
+                        
+                    </p>
+                </div>
+            </section>
+            <section class="flex justify-center gap-8 py-2">
+
+                <div class="text-center w-1/6">
+                    <img src="../images/leftstack0.jpg"
+                        alt="monastary"
+                        class="rounded-lg shadow-md" />
+                    <p class="mt-2 text-sm text-gray-700">
+                        
+                    </p>
+                </div>
+                <div class="text-center w-1/6">
+                    <img src="../images/rightstack0.jpg"
+                        alt="monastary"
+                        class="rounded-lg shadow-md" />
+                    <p class="mt-2 text-sm text-gray-700">
+                        
+                    </p>
+                </div>
+                <div class="text-center w-1/6">
+                    <img src="../images/final0.jpg"
+                        alt="monastary"
+                        class="rounded-lg shadow-md" />
+                    <p class="mt-2 text-sm text-gray-700">
+                    </p>
+                </div>
+            </section>
+            <section class="flex justify-center gap-8 py-2">
+
+                <div class="text-center w-1/6">
+                    <img src="../images/leftstack1.jpg"
+                        alt="monastary"
+                        class="rounded-lg shadow-md" />
+                    <p class="mt-2 text-sm text-gray-700">
+                        
+                    </p>
+                </div>
+                <div class="text-center w-1/6">
+                    <img src="../images/rightstack1.jpg"
+                        alt="monastary"
+                        class="rounded-lg shadow-md" />
+                    <p class="mt-2 text-sm text-gray-700">
+                        
+                    </p>
+                </div>
+                <div class="text-center w-1/6">
+                    <img src="../images/final1.jpg"
+                        alt="monastary"
+                        class="rounded-lg shadow-md" />
+                    <p class="mt-2 text-sm text-gray-700">
+                    </p>
+                </div>
+            </section>
+
+            <section class="flex justify-center gap-8 py-2">
+
+                <div class="text-center w-1/6">
+                    <img src="../images/leftstack2.jpg"
+                        alt="monastary"
+                        class="rounded-lg shadow-md" />
+                    <p class="mt-2 text-sm text-gray-700">
+                        
+                    </p>
+                </div>
+                <div class="text-center w-1/6">
+                    <img src="../images/rightstack2.jpg"
+                        alt="monastary"
+                        class="rounded-lg shadow-md" />
+                    <p class="mt-2 text-sm text-gray-700">
+                        
+                    </p>
+                </div>
+                <div class="text-center w-1/6">
+                    <img src="../images/final2.jpg"
+                        alt="monastary"
+                        class="rounded-lg shadow-md" />
+                    <p class="mt-2 text-sm text-gray-700">
+                    </p>
+                </div>
+            </section>
+
+            <section class="flex justify-center gap-8 py-2">
+
+                <div class="text-center w-1/6">
+                    <img src="../images/leftstack3.jpg"
+                        alt="monastary"
+                        class="rounded-lg shadow-md" />
+                    <p class="mt-2 text-sm text-gray-700">
+                        
+                    </p>
+                </div>
+                <div class="text-center w-1/6">
+                    <img src="../images/rightstack3.jpg"
+                        alt="monastary"
+                        class="rounded-lg shadow-md" />
+                    <p class="mt-2 text-sm text-gray-700">
+                        
+                    </p>
+                </div>
+                <div class="text-center w-1/6">
+                    <img src="../images/final3.jpg"
+                        alt="monastary"
+                        class="rounded-lg shadow-md" />
+                    <p class="mt-2 text-sm text-gray-700">
+                    </p>
+                </div>
+            </section>
+
+            <section class="flex justify-center gap-8 py-2">
+
+                <div class="text-center w-1/6">
+                    <img src="../images/leftstack4.jpg"
+                        alt="monastary"
+                        class="rounded-lg shadow-md" />
+                    <p class="mt-2 text-sm text-gray-700">
+                        
+                    </p>
+                </div>
+                <div class="text-center w-1/6">
+                    <img src="../images/rightstack4.jpg"
+                        alt="monastary"
+                        class="rounded-lg shadow-md" />
+                    <p class="mt-2 text-sm text-gray-700">
+                        
+                    </p>
+                </div>
+                <div class="text-center w-1/6">
+                    <img src="../images/final4.jpg"
+                        alt="monastary"
+                        class="rounded-lg shadow-md" />
+                    <p class="mt-2 text-sm text-gray-700">
+                    </p>
+                </div>
+            </section>
+
+            <section class="flex justify-center gap-8 py-2">
+
+                <div class="text-center w-1/6">
+                    <img src="../images/finalleft.jpg"
+                        alt="monastary"
+                        class="rounded-lg shadow-md" />
+                    <p class="mt-2 text-sm text-gray-700">
+                        
+                    </p>
+                </div>
+                <div class="text-center w-1/6">
+                    <img src="../images/finalright.jpg"
+                        alt="monastary"
+                        class="rounded-lg shadow-md" />
+                    <p class="mt-2 text-sm text-gray-700">
+                        
+                    </p>
+                </div>
+                <div class="text-center w-1/6">
+                    <img src="../images/final.jpg"
+                        alt="monastary"
+                        class="rounded-lg shadow-md" />
+                    <p class="mt-2 text-sm text-gray-700">
+                    </p>
+                </div>
+            </section>
+
+            <section class="flex justify-center gap-8 py-12">
+
+                <div class="text-center w-1/5">
+                    <img src="../images/frodoInSauron.png"
+                        alt="monastary"
+                        class="rounded-lg shadow-md" />
+                    <p class="mt-2 text-sm text-gray-700">
+                        Frodo in Sauron from Lord of the Rings in a irregular mask
+                    </p>
+                </div>
+                <div class="text-center w-1/5">
+                    <img src="../images/cuddlesInAvocado.png"
+                        alt="monastary"
+                        class="rounded-lg shadow-md" />
+                    <p class="mt-2 text-sm text-gray-700">
+                        A penguin stuffed animal in a avocado in a irregular mask
+                    </p>
+                </div>
+            </section>
+            
+        </div>
+    </div>
+    
+</body>
+</html>

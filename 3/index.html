@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- KaTeX CSS + JS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" />
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+      onload="renderMathInElement(document.body,{
+        delimiters:[
+          {left:'$$', right:'$$', display:true},
+          {left:'\\[', right:'\\]', display:true},
+          {left:'\\(', right:'\\)', display:false}
+        ],
+        throwOnError:false
+      });"></script>
+    <title>My Portfolio - Project 3</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="flex justify-between items-center px-6 py-4 border-b border-gray-200">
+        <h2 class="text-2xl font-bold text-blue-600">CS180 Portfolio</h1>
+        <ul class="flex gap-6">
+        <li><a href="../index.html" class="hover:text-blue-600 transition">Home</a></li>
+        <li><a href="../0/index.html" class="hover:text-blue-600 transition">Project 0</a></li>
+        <li><a href="../1/index.html" class="hover:text-blue-600 transition">Project 1</a></li>
+        <li><a href="../2/index.html" class="hover:text-blue-600 transition">Project 2</a></li>
+        <li><a href="#" class="hover:text-blue-600 transition">Project 3</a></li>
+        </ul>
+    </nav>
+    <div class="m-8">
+        <div class="p-6 border-gray-400 bg-blue-600 rounded-lg m-6">
+            <h1 class="text-white text-4xl md:text-5xl font-bold text-center">Project 3: [Auto]Stitching Photo Mosaics</h1>
+        </div>
+        <p class="text-gray-700 text-center">
+            In this project, we stich together photographs to create larger composite images.
+        </p>
+        <div class="p-4 border-gray-400 bg-green-600 rounded-lg m-4">
+            <h1 class="text-white text-3xl md:text-4xl font-bold text-center">Part A: Image Warping and Mosaicing</h1>
+        </div>
+        <div class="p-4 m-4">
+            <h2 class="font-bold text-2xl">Part A.1: Shoot the Pictures</h2>
+            <p class="text-gray-700">
+                First, we need to shoot the pictures to create the mosaics! An important part is
+                to keep our center of projection the same, since single homographies require this, so
+                I took all photos while only rotating my cell phone.
+            </p>
+            <p class="text-gray-700">
+                Below are images that I took!
+            </p>
+            <div class="py-6 ml-6 mr-6">
+                <section class="flex justify-center gap-2">
+                        <div class="text-center w-1/6">
+                            <img src="./images/asianleftleft.jpeg"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/6">
+                            <img src="./images/asianleft.jpeg"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/6">
+                            <img src="./images/asianmiddle.jpeg"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/6">
+                            <img src="./images/asianright.jpeg"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/6">
+                            <img src="./images/asianright.jpeg"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                </section>
+                <p class="text-gray-700 text-center py-2">
+                    Inside of Berkeley's East Asian Library, rotating the camera along
+                    the z (vertical) axis. (left most to right most)
+                </p>
+            </div>
+            <h2 class="font-bold text-2xl">Part A.2: Recover Homographies</h2>
+            <p class="text-gray-700">
+                In this section, we use linear algebra to compute homographies from correspondences
+            </p>
+            <section class="rounded-2xl border bg-white p-6 shadow-sm flex justify-center gap-4 m-2">
+                <div class="flex items-center gap-1 flex-wrap">
+                    <h2 class="text-md font-medium mb-3">Large Left → Middle Homography</h2>
+                    <div class="overflow-x-visible">
+                    $$\begin{bmatrix}
+                    4.648203 & 0.057244 & -4.076861\times 10^{3} \\
+                    1.363090 & 3.956188 & -1.807942\times 10^{3} \\
+                    0.002494 & 7.496353\times 10^{-5} & 1.000000
+                    \end{bmatrix}$$
+                    </div>
+                </div>
+                <div class="flex items-center gap-1 flex-wrap">
+                    <h2 class="text-md font-medium mb-3">Slight Left → Middle Homography</h2>
+                    <div class="overflow-x-visible">
+                    $$\begin{bmatrix}
+                    1.646451 & -0.070159 & -738.010122 \\
+                    0.240919 & 1.263833 & -188.362915 \\
+                    5.069110\times 10^{-4} & -1.444826\times 10^{-4} & 1.000000
+                    \end{bmatrix}$$
+                    </div>
+                </div>
+            </section>
+            <section class="rounded-2xl border bg-white p-6 shadow-sm flex justify-center gap-4 m-2">
+                <div class="flex items-center gap-1 flex-wrap">
+                    <h2 class="text-md font-medium mb-3">Slight Right → Middle Homography</h2>
+                    <div class="overflow-x-visible">
+                    $$\begin{bmatrix}
+                    0.526235 & -0.071124 & 485.834174 \\
+                    -0.125217 & 0.752835 & 94.401809 \\
+                    -3.011633\times 10^{-4} & -5.149075\times 10^{-5} & 1.000000
+                    \end{bmatrix}$$
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-1 flex-wrap">
+                    <h2 class="text-md font-medium mb-3">Large Right → Middle Homography</h2>
+                    <div class="overflow-x-visible">
+                    $$\begin{bmatrix}
+                    0.131936 & 0.003065 & 882.366432 \\
+                    -0.291282 & 0.841679 & 69.541333 \\
+                    -6.188067\times 10^{-4} & 3.779466\times 10^{-5} & 1.000000
+                    \end{bmatrix}$$
+                    </div>
+                </div>
+            </section>
+            <h2 class="font-bold text-2xl">Part A.3: Warp the Images</h2>
+            <p class="text-gray-700">
+                In this section, we warp the images in two ways: Nearest Neighbor and Bilinear Interpolation
+                using the homography matrix
+            </p>
+            <div class="py-6 ml-6 mr-6">
+                <section class="flex justify-center gap-2">
+                    <div class="text-center w-1/3">
+                        <img src="./images/asianleftleft.jpeg"
+                            alt="None"
+                            class="rounded-lg shadow-md" />
+                    </div>
+                    <div class="text-center w-1/3">
+                        <img src="./images/asianmiddle.jpeg"
+                            alt="None"
+                            class="rounded-lg shadow-md" />
+                    </div>
+                </section>
+                <p class="text-gray-700 text-center py-2">
+                    The original large left and middle images
+                </p>
+                <section class="flex justify-center gap-2">
+                    <div class="text-center w-1/2">
+                        <img src="./images/leftleft_warp_asian_2.png"
+                            alt="None"
+                            class="rounded-lg shadow-md" />
+                    </div>
+                    <div class="text-center w-1/2">
+                        <img src="./images/leftleft_warp_asian_bin_2.png"
+                            alt="None"
+                            class="rounded-lg shadow-md" />
+                    </div>
+                </section>
+                <p class="text-gray-700 text-center py-2">
+                    The left image "warped" into the plane of the middle image.
+                    (left) is nearest neighbor, which looks noisier and has more artifacts.
+                    (right) is bilinear, which looks cleaner but has a dark outline.
+                </p>
+            </div>
+            <h2 class="font-bold text-2xl">Part A.4: Blend the Images into a Mosaic</h2>
+            <p class="text-gray-700">
+                In this section, we blend our warped images together to create a composite image
+            </p>
+            <div class="py-6 ml-6 mr-6">
+                <section class="flex justify-center gap-2">
+                    <div class="text-center w-1/3">
+                        <img src="./images/leftleft_warp_asian_2.png"
+                            alt="None"
+                            class="rounded-lg shadow-md" />
+                    </div>
+                    <div class="text-center w-1/3">
+                        <img src="./images/asianmiddle.png"
+                            alt="None"
+                            class="rounded-lg shadow-md" />
+                    </div>
+                    <div class="text-center w-1/3">
+                        <img src="./images/rightright_warp_asian_2.png"
+                            alt="None"
+                            class="rounded-lg shadow-md" />
+                    </div>
+                </section>
+                <p class="text-gray-700 text-center py-2">
+                    The warped large left, original middle, and warped large right images. Both warped
+                    images shown above use nearest neighbors.
+                </p>
+                <section class="flex justify-center gap-2">
+                    <div class="text-center w-1/2">
+                        <img src="./images/asian_large_blended_2.png"
+                            alt="None"
+                            class="rounded-lg shadow-md" />
+                    </div>
+                    <div class="text-center w-1/2">
+                        <img src="./images/asian_large_blended_bin_2.png"
+                            alt="None"
+                            class="rounded-lg shadow-md" />
+                    </div>
+                </section>
+                <p class="text-gray-700 text-center py-2">
+                    The composite images for nearest neighbors (left) and bilinear (right)
+                </p>
+            </div>
+        </div>
+    </div>
+    
+</body>
+</html>

@@ -55,27 +55,27 @@
             </p>
             <div class="py-6 ml-6 mr-6">
                 <section class="flex justify-center gap-2">
-                        <div class="text-center w-1/6">
+                        <div class="text-center w-1/5">
                             <img src="./images/asianleftleft.jpeg"
                                 alt="None"
                                 class="rounded-lg shadow-md" />
                         </div>
-                        <div class="text-center w-1/6">
+                        <div class="text-center w-1/5">
                             <img src="./images/asianleft.jpeg"
                                 alt="None"
                                 class="rounded-lg shadow-md" />
                         </div>
-                        <div class="text-center w-1/6">
+                        <div class="text-center w-1/5">
                             <img src="./images/asianmiddle.jpeg"
                                 alt="None"
                                 class="rounded-lg shadow-md" />
                         </div>
-                        <div class="text-center w-1/6">
+                        <div class="text-center w-1/5">
                             <img src="./images/asianright.jpeg"
                                 alt="None"
                                 class="rounded-lg shadow-md" />
                         </div>
-                        <div class="text-center w-1/6">
+                        <div class="text-center w-1/5">
                             <img src="./images/asianright.jpeg"
                                 alt="None"
                                 class="rounded-lg shadow-md" />
@@ -86,11 +86,182 @@
                     the z (vertical) axis. (left most to right most)
                 </p>
             </div>
+            <div class="py-6 ml-6 mr-6">
+                <section class="flex justify-center gap-2">
+                    <div class="text-center w-1/4">
+                        <img src="./images/animalsleft.jpeg"
+                            alt="None"
+                            class="rounded-lg shadow-md" />
+                    </div>
+                    <div class="text-center w-1/4">
+                        <img src="./images/animalsmid.jpeg"
+                            alt="None"
+                            class="rounded-lg shadow-md" />
+                    </div>
+                    <div class="text-center w-1/4">
+                        <img src="./images/animalsright.jpeg"
+                            alt="None"
+                            class="rounded-lg shadow-md" />
+                    </div>
+                </section>
+                <p class="text-gray-700 text-center py-2">
+                    Stuffed animals on a couch, rotating the camera along the z (vertical) axis.
+                </p>
+            </div>
+            <div class="py-6 ml-6 mr-6">
+                <section class="flex justify-center gap-2">
+                    <div class="text-center w-1/4">
+                        <img src="./images/camptop.jpeg"
+                            alt="None"
+                            class="rounded-lg shadow-md" />
+                    </div>
+                    <div class="text-center w-1/4">
+                        <img src="./images/campmid.jpeg"
+                            alt="None"
+                            class="rounded-lg shadow-md" />
+                    </div>
+                    <div class="text-center w-1/4">
+                        <img src="./images/campbot.jpeg"
+                            alt="None"
+                            class="rounded-lg shadow-md" />
+                    </div>
+                </section>
+                <p class="text-gray-700 text-center py-2">
+                    The iconic Campanile, rotating the camera along the x (horizontal) axis.
+                </p>
+            </div>
             <h2 class="font-bold text-2xl">Part A.2: Recover Homographies</h2>
-            <p class="text-gray-700">
-                In this section, we use linear algebra to compute homographies from correspondences
+            <p class="text-gray-700 m-2">
+                In this section, we use linear algebra to compute homographies from correspondences.
+                This is done by solving the equation p2 = H p1, where p1 and p2 are correspondences
+                from the first and second image. H is the 3x3 matrix with 8 unknowns, with the 9th
+                value just for scale. This value can stay at 1. To make the equation work, we express
+                the correspondences as (x, y, 1). Examples are shown for the East Asian Library pictures.
             </p>
-            <section class="rounded-2xl border bg-white p-6 shadow-sm flex justify-center gap-4 m-2">
+            <p class="text-gray-700 m-3">
+                Below are three sets of correspondences on the image. Six correspondences were made
+                for each image pair. This was determined experimentally to be number
+                 where adding more correspondences
+                contributed to only marginal improvements.
+            </p>
+            <div class="py-2 ml-6 mr-6">
+                <section class="flex justify-center gap-2">
+                    <div class="text-center w-1/2">
+                        <img src="./images/corrleftleft_middle1.png"
+                            alt="None"
+                            class="rounded-lg shadow-md" />
+                    </div>
+                    <div class="text-center w-1/2">
+                        <img src="./images/corrleftleft_middle2.png"
+                            alt="None"
+                            class="rounded-lg shadow-md" />
+                    </div>
+                </section>
+                <p class="text-gray-700 text-center py-2">
+                    Strong Left and Middle correspondences
+                </p>
+            </div>
+            <div class="py-2 ml-6 mr-6">
+                <section class="flex justify-center gap-2">
+                    <div class="text-center w-1/2">
+                        <img src="./images/corrleft_middle1.png"
+                            alt="None"
+                            class="rounded-lg shadow-md" />
+                    </div>
+                    <div class="text-center w-1/2">
+                        <img src="./images/corrleft_middle2.png"
+                            alt="None"
+                            class="rounded-lg shadow-md" />
+                    </div>
+                </section>
+                <p class="text-gray-700 text-center py-2">
+                    Slight Left and Middle correspondences
+                </p>
+            </div>
+            <div class="py-2 ml-6 mr-6">
+                <section class="flex justify-center gap-2">
+                    <div class="text-center w-1/2">
+                        <img src="./images/corrright_middle2.png"
+                            alt="None"
+                            class="rounded-lg shadow-md" />
+                    </div>
+                    <div class="text-center w-1/2">
+                        <img src="./images/corrright_middle1.png"
+                            alt="None"
+                            class="rounded-lg shadow-md" />
+                    </div>
+                </section>
+                <p class="text-gray-700 text-center py-2">
+                    Middle and Slight Right correspondences
+                </p>
+            </div>
+            <div class="py-2 ml-6 mr-6">
+                <section class="flex justify-center gap-2">
+                    <div class="text-center w-1/2">
+                        <img src="./images/corrrightright_middle2.png"
+                            alt="None"
+                            class="rounded-lg shadow-md" />
+                    </div>
+                    <div class="text-center w-1/2">
+                        <img src="./images/corrrightright_middle1.png"
+                            alt="None"
+                            class="rounded-lg shadow-md" />
+                    </div>
+                </section>
+                <p class="text-gray-700 text-center py-2">
+                    Middle and Large Right correspondences
+                </p>
+            </div>
+            <p class="text-gray-700 m-3">
+                To create the system of equations we can express this in terms of the correspondence
+                points and the unknowns
+            </p>
+            <div>
+                <p class="text-gray-700 text-center m-1">
+                    Starting with the equation H p1 = p2
+                </p>
+                $$
+                \begin{bmatrix}
+                a & b & c \\
+                d & e & f \\
+                h & i & 1
+                \end{bmatrix}
+                \begin{bmatrix}
+                x_1 \\
+                y_1 \\
+                1
+                \end{bmatrix}
+                =
+                \begin{bmatrix}
+                x_2 \\
+                y_2 \\
+                1
+                \end{bmatrix}
+                $$
+                <p class="text-gray-700 text-center m-1">
+                    This can be arranged into a system of equations
+                </p>
+                $$
+                a x_1 + b y_1 + c = x_2 \\
+                d x_1 + e y_1 + f = y_2 \\
+                h x_1 + i y_1 + 1 = 1
+                $$
+                <p class="text-gray-700 text-center m-1">
+                    Which can be simplifed to a system of two equations
+                </p>
+                $$
+                a x_1 + b y_1 + c - h x_1 x_2 - i y_1 x_2 = x_2 \\
+                d x_1 + e y_1 + f - h x_1 y_2 - i y_1 y_2 = y_2
+                $$
+                <p class="text-gray-700 text-center m-1">
+                    These two equations can now be solved using least squares!
+                </p>
+            </div>
+            <p class="text-gray-700 m-3">
+                Below are the homographies found from the East Asian
+                library pictures. All homographies warp to the middle image.
+            </p>
+            <section class="rounded-2xl border bg-white p-6 shadow-sm flex justify-center gap-4 m-4">
                 <div class="flex items-center gap-1 flex-wrap">
                     <h2 class="text-md font-medium mb-3">Large Left → Middle Homography</h2>
                     <div class="overflow-x-visible">
@@ -112,7 +283,7 @@
                     </div>
                 </div>
             </section>
-            <section class="rounded-2xl border bg-white p-6 shadow-sm flex justify-center gap-4 m-2">
+            <section class="rounded-2xl border bg-white p-6 shadow-sm flex justify-center gap-4 m-4">
                 <div class="flex items-center gap-1 flex-wrap">
                     <h2 class="text-md font-medium mb-3">Slight Right → Middle Homography</h2>
                     <div class="overflow-x-visible">
@@ -135,10 +306,15 @@
                     </div>
                 </div>
             </section>
-            <h2 class="font-bold text-2xl">Part A.3: Warp the Images</h2>
+            <h2 class="font-bold text-2xl mt-8">Part A.3: Warp the Images</h2>
             <p class="text-gray-700">
                 In this section, we warp the images in two ways: Nearest Neighbor and Bilinear Interpolation
-                using the homography matrix
+                using the homography matrix. In nearest neighbors, a warped point is rounded to the nearest
+                integer. In bilinear interpolation, a warped subpixel is a combination of surrounding pixels,
+                weighted based on the fractional difference between the point and its surroundings.
+
+                Note that for the warped images, we increase the canvas size. This will be important for
+                the next part where we blend images together. Below are two examples of warping
             </p>
             <div class="py-6 ml-6 mr-6">
                 <section class="flex justify-center gap-2">
@@ -171,12 +347,82 @@
                 <p class="text-gray-700 text-center py-2">
                     The left image "warped" into the plane of the middle image.
                     (left) is nearest neighbor, which looks noisier and has more artifacts.
-                    (right) is bilinear, which looks cleaner but has a dark outline.
+                    (right) is bilinear, which looks smoother but has a dark outline.
+                </p>
+            </div>
+            <div class="py-6 ml-6 mr-6">
+                <section class="flex justify-center gap-2">
+                    <div class="text-center w-1/3">
+                        <img src="./images/camptop.jpeg"
+                            alt="None"
+                            class="rounded-lg shadow-md" />
+                    </div>
+                    <div class="text-center w-1/3">
+                        <img src="./images/campmid.jpeg"
+                            alt="None"
+                            class="rounded-lg shadow-md" />
+                    </div>
+                </section>
+                <p class="text-gray-700 text-center py-2">
+                    The original top and middle images
+                </p>
+                <section class="flex justify-center gap-2">
+                    <div class="text-center w-1/2">
+                        <img src="./images/top_warp_camp.png"
+                            alt="None"
+                            class="rounded-lg shadow-md" />
+                    </div>
+                    <div class="text-center w-1/2">
+                        <img src="./images/top_warp_camp_bin.png"
+                            alt="None"
+                            class="rounded-lg shadow-md" />
+                    </div>
+                </section>
+                <p class="text-gray-700 text-center py-2">
+                    The top image "warped" into the plane of the middle image.
+                    (left) is nearest neighbor, which looks noisier and has more artifacts.
+                    (right) is bilinear, which looks smoother but has a dark outline.
+                    Note: it was a windy day, so the trees were swaying a little bit, so there
+                    may be some slight inaccuracies with the trees.
                 </p>
             </div>
             <h2 class="font-bold text-2xl">Part A.4: Blend the Images into a Mosaic</h2>
-            <p class="text-gray-700">
-                In this section, we blend our warped images together to create a composite image
+            <p class="text-gray-700 m-2">
+                In this section, we blend our warped images together to create a composite image.
+                I use the following procedure to blend images together.
+            </p>
+            <ol class="list-decimal text-gray-700 ml-6 p-2">
+                <li>
+                    Align images onto the same canvas. This is actually done in the previous part,
+                    which is why the canvas increased. For the middle image, the edges are padded
+                    equally such that it ends in the same canvas dimensions.
+                </li>
+                <li>
+                    Create masks in overlapping regions. For horizontal images, we take the
+                    left and right edges of an overlapping region and apply a linear horizontal
+                    alpha blend/feathering. For example, on left edge of an overlapping region
+                    left image alpha = 1 and right image alpha = 0. This goes the same for vertical
+                    images, except we apply a linear vertical alpha blend/feathering.
+                </li>
+                <li>
+                    Perform distance weighting in overlapping regions. Even after the masks, edge
+                    artifacts still appear at the edges. For horizontal, this would be at the
+                    top/bottom edge of an image which ends in the overlapping section. Since
+                    the image is warped, we cannot just apply smoothing in a line easily. Therefore,
+                    we perform distance weighting based on its closest distance to an edge (missing
+                    pixel) in the overlapping region. This blends the edges of images in overlapping
+                    regions for the opposite axis (top/bottom edge in horizontal blend). 
+                    Again, the same goes for vertical.
+                </li>
+                <li>
+                    Recombine the images weighted by their alpha value. All pixels that are combined
+                    with empty parts of the other images are set to full value (alpha = 255).
+                </li>
+            </ol>
+            <p class="text-gray-700 m-2">
+                Below are the three final composite images created from Part A. We show the
+                nearest neighbors result for each (as both nearest neighbors and
+                bilinear looks similar)
             </p>
             <div class="py-6 ml-6 mr-6">
                 <section class="flex justify-center gap-2">
@@ -197,27 +443,384 @@
                     </div>
                 </section>
                 <p class="text-gray-700 text-center py-2">
-                    The warped large left, original middle, and warped large right images. Both warped
-                    images shown above use nearest neighbors.
+                    The warped large left, original middle, and warped large right images for east
+                    asian library.
                 </p>
                 <section class="flex justify-center gap-2">
+                    <div class="text-center w-3/4">
+                        <img src="./images/asian_large_blended_2.png"
+                            alt="None"
+                            class="rounded-lg shadow-md" />
+                    </div>
+                </section>
+                <p class="text-gray-700 text-center py-2">
+                    The composite image
+                    for East Asian Library!
+                </p>
+            </div>
+            <div class="py-6 ml-6 mr-6">
+                <section class="flex justify-center gap-2">
+                    <div class="text-center w-1/3">
+                        <img src="./images/left_warp_animals.png"
+                            alt="None"
+                            class="rounded-lg shadow-md" />
+                    </div>
+                    <div class="text-center w-1/3">
+                        <img src="./images/animalsmid.png"
+                            alt="None"
+                            class="rounded-lg shadow-md" />
+                    </div>
+                    <div class="text-center w-1/3">
+                        <img src="./images/right_warp_animals.png"
+                            alt="None"
+                            class="rounded-lg shadow-md" />
+                    </div>
+                </section>
+                <p class="text-gray-700 text-center py-2">
+                    The warped left, original middle, and warped right images for the
+                    stuffed animals
+                </p>
+                <section class="flex justify-center gap-2">
+                    <div class="text-center w-3/4">
+                        <img src="./images/animals_large_blended.png"
+                            alt="None"
+                            class="rounded-lg shadow-md" />
+                    </div>
+                </section>
+                <p class="text-gray-700 text-center py-2">
+                    The composite images
+                    for the stuffed animals!
+                </p>
+            </div>
+            <div class="py-6 ml-6 mr-6">
+                <section class="flex justify-center gap-2">
+                    <div class="text-center w-1/3">
+                        <img src="./images/top_warp_camp.png"
+                            alt="None"
+                            class="rounded-lg shadow-md" />
+                    </div>
+                    <div class="text-center w-1/3">
+                        <img src="./images/campmid.png"
+                            alt="None"
+                            class="rounded-lg shadow-md" />
+                    </div>
+                    <div class="text-center w-1/3">
+                        <img src="./images/bot_warp_camp.png"
+                            alt="None"
+                            class="rounded-lg shadow-md" />
+                    </div>
+                </section>
+                <p class="text-gray-700 text-center py-2">
+                    The warped top, original middle, and warped bottom images
+                    for the Campanile.
+                </p>
+                <section class="flex justify-center gap-2">
+                    <div class="text-center w-3/4">
+                        <img src="./images/camp_large_blended.png"
+                            alt="None"
+                            class="rounded-lg shadow-md" />
+                    </div>
+                </section>
+                <p class="text-gray-700 text-center py-2">
+                    The composite images
+                    for the Campanile.
+                    Note: it was a windy day, so the trees were swaying a little bit, so there
+                    may be some slight inaccuracies with the trees.
+                </p>
+            </div>
+        </div>
+        <div class="p-4 border-gray-400 bg-green-600 rounded-lg m-4">
+            <h1 class="text-white text-3xl md:text-4xl font-bold text-center">Part B: Feature Matching for Autostitching</h1>
+        </div>
+        <p class="text-gray-700 ml-6 mr-4">
+            Note: The process is only shown for one example image(s), but the same exact process
+            is done to create 3 automatic mosaics, which is shown at the end.
+        </p>
+        <div class="p-4 m-4">
+            <h2 class="font-bold text-2xl">Part B.1: Harris Corner Detection</h2>
+            <p class="text-gray-700 m-2">
+                In this section, we use harris corner detection to find corner features in an image.
+                We then apply Adaptive Non-Maximal Suppression (ANMS) to reduce the maximum number
+                of features (due to computation cost), while still achieving a good distribution
+                over the whole image.
+            </p>
+            <p class="text-gray-700 mx-3">
+                First, lets look at the results of the harris detector we are given to gain some intuition.
+                Starting with the h matrix
+            </p>
+            <div class="py-6 mx-6 my-2">
+                <section class="flex justify-center gap-2">
+                        <div class="text-center">
+                            <img src="./images/h.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center">
+                            <img src="./images/hbin.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                </section>
+                <p class="text-gray-700 text-center py-2 my-2">
+                    This matrix shows us the strongest corners, which are mostly in the book section.
+                    However, we want values to be spread out. So, we can instead show the peak local
+                    maxes across the whole image, where each peak is separated by some minimum distance (d).
+                    This part is also given in the harris detector, so we can draw a circle at every coordinate.
+                </p>
+                <section class="flex justify-center gap-2">
+                        <div class="text-center w-2/3">
+                            <img src="./images/localmax.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                </section>
+            </div>
+            <p class="text-gray-700 m-2">
+                Next, we apply Adaptive Non-Maximal Suppression (ANMS) to reduce the maximum number
+                of features (due to computation cost), while still achieving a good distribution
+                over the whole image. We can follow minimum suppresion radius equation in the paper,
+                which finds the minimum distance for each point to any other point such that its
+                h value (corner strength) is less than 0.9 * the h value of the other point. Then,
+                the top n (500) are taken.
+            </p>
+            <p class="text-gray-700 mx-3">
+                Due to the large resolution of the images, we need to reduce the number of interest points
+                before making the minimum distance matrix calculations (or it results in a matrix that
+                takes over 12 gb in memory), so we adjust the minimum distance (d) in the harris detector.
+            </p>
+            <div>$$r_i = \min_j |x_i - x_j|, s.t. f(x_i) < c_{robust} f(x_j), x_j \in \mathcal{I}$$</div>
+            <div class="py-6 mx-6 my-2">
+                <section class="flex justify-center gap-2">
+                        <div class="text-center w-2/3">
+                            <img src="./images/anms.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                </section>
+                <p class="text-gray-700 text-center py-2 my-2">
+                    However, after not being completely satisfied with these images (several points
+                    on flat surfaces and some corners missing), I tried another approach, keeping d
+                    to a lower value, but filtering out "very weak" (> 0.1 threshold) h values corner
+                    strengths. This has the effect of slightly reducing the uniformity (some points are
+                     very pretty together) of the interest
+                    points across the image for more accurate corner detection and less edge detection.
+                </p>
+                <section class="flex justify-center gap-2">
+                        <div class="text-center w-2/3">
+                            <img src="./images/anmsfiltered.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                </section>
+            </div>
+            
+
+            <h2 class="font-bold text-2xl">Part B.2: Feature Descriptor Extraction</h2>
+            <p class="text-gray-700 m-2">
+                In this section, we create 8x8 feature descriptors, which are blurred sampled patches around
+                the interest points created from the previous part. To create these descriptors (as
+                described in the paper), we do the following:
+            </p>
+            <ol class="list-decimal text-gray-700 ml-6 p-2">
+                <li>
+                    Blur the entire image such that spacings (frequencies) are
+                    approximately 5 pixels. This is to prevent aliasing.
+                </li>
+                <li>
+                    For each point, take a 40x40 patch and downsample to 8x8. Due to the 
+                    previous blur, this makes the sampling rate approximately once per pixel.
+                </li>
+                <li>
+                    Normalize to mean 0 and standard deviation of 1.
+                </li>
+            </ol>
+            <p class="text-gray-700 m-2">
+                These feature descriptors are now standardized, normalized, and free of high detail,
+                capturing the overall pixel magnitudes from that corner. Here are three features
+                from the image, as well as where they are and what they originally looked like in the image.
+                The feature descriptor is shown in the bottom left
+            </p>
+            <div class="py-6 mx-6 my-2">
+                <section class="flex justify-center gap-2 mb-4">
+                        <div class="text-center w-2/3">
+                            <img src="./images/desc1.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                </section>
+                <section class="flex justify-center gap-2 mb-4">
+                        <div class="text-center w-2/3">
+                            <img src="./images/desc2.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                </section>
+                <section class="flex justify-center gap-2">
+                        <div class="text-center w-2/3">
+                            <img src="./images/desc3.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                </section>
+            </div>
+            <h2 class="font-bold text-2xl">Part B.3: Feature Matching</h2>
+            <p class="text-gray-700 m-2">
+                In this section we take the feature descriptors made and match them across images.
+                Here are the steps discussed in the paper:
+            </p>
+            <ol class="list-decimal text-gray-700 ml-6 p-2">
+                <li>
+                    Compute the L2 distance for every combination/pair between both images
+                </li>
+                <li>
+                    Take the nearest neighbot (minimum) and second nearest neighbor (second minimum) 
+                    L2 distances for each
+                    feature in the first image, and compute the error ratio: 1-NN/2-NN
+                </li>
+                <li>
+                    Only keep the first image feature descriptors that have an error ratio below some
+                    threshold (Lowe's).
+                </li>
+                <li>
+                    For every first image feature descriptor that still exists, take its corresponding
+                    nearest neighbor feature descriptor for the
+                     second image (which is already computed from step 2), and this is a match!
+                </li>
+            </ol>
+            <p class="text-gray-700 m-2">
+                From the paper, we choose a threshold of 0.6.
+                Below are a couple examples of feature descriptor matches:
+            </p>
+            <div class="py-6 ml-6 mr-6">
+                <section class="flex justify-center gap-2 mb-4">
+                    <div class="text-center w-2/3">
+                        <img src="./images/match1.png"
+                            alt="None"
+                            class="rounded-lg shadow-md" />
+                    </div>
+                </section>
+                <section class="flex justify-center gap-2 my-6">
+                    <div class="text-center w-2/3">
+                        <img src="./images/match2.png"
+                            alt="None"
+                            class="rounded-lg shadow-md" />
+                    </div>
+                </section>
+                <p class="text-gray-700 text-center py-2 m-2 mt-4">
+                    And here is a diagram of feature matches across two images. The colors
+                    here do not mean anything, and are just there for better visibility.
+                </p>
+                <section class="flex justify-center gap-2">
+                    <div class="text-center w-3/4">
+                        <img src="./images/match.png"
+                            alt="None"
+                            class="rounded-lg shadow-md" />
+                    </div>
+                </section>
+                <p class="text-gray-700 text-center py-2">
+                    If you look closely, there are some feature matches (outliers) that are
+                    not exactly correct! For example, looking at the left image, find the
+                    sky blue feature under the sign that states "ALL", which is not visible
+                    in the right image. This ends up matching to a spot on the bottom wall,
+                    which also happens to have another feature matching to it (2 to 1!).
+                    The next section will resolve this.
+                </p>
+            </div>
+            <h2 class="font-bold text-2xl">Part B.4: RANSAC for Robust Homography</h2>
+            <p class="text-gray-700">
+                In this section, we use RANSAC, or RAndom SAmple Consensus, to remove outliers.
+                This is done by computing homographies to warp points from one image to the other,
+                and then comparing the warped point to its corresponding feature match. We follow
+                the procedure from lecture:
+            </p>
+            <ol class="list-decimal text-gray-700 ml-6 p-2">
+                <li>
+                    Randomly select four feature pairs.
+                </li>
+                <li>
+                    Compute a homography with these four pairs.
+                </li>
+                <li>
+                    Compute inliers, which are points such that the L2 distance between
+                    itself (warped by homography) and its feature match is below some
+                    error threshold.
+                </li>
+                <li>
+                    Repeat steps 1-3 for some amount of iterations, keeping the largest
+                    set of inliers.
+                </li>
+                <li>
+                    Compute a homography with the inliers.
+                </li>
+            </ol>
+            <p class="text-gray-700">
+                We use this method to not only exclude outliers, but also to obtain an
+                automatic homography matrix that is robust to outliers. Below,
+                we choose the number of iterations to be 20 and the error threshold to be 3.
+                Red are outliers, while green are inliers. Note that due to the random nature
+                of this algorithm, there are some outliers that should be inliers, but there
+                are enough inliers between the two such that the homography is robust. This could
+                be improved with a larger number of iterations and error threshold tweaking.
+            </p>
+            <div class="py-6 ml-6 mr-6">
+                <section class="flex justify-center gap-2">
+                    <div class="text-center w-3/4">
+                        <img src="./images/ransac.png"
+                            alt="None"
+                            class="rounded-lg shadow-md" />
+                    </div>
+                </section>
+            </div>
+            <p class="text-gray-700">
+                Taking our homographies created from RANSAC, we use the same warping and blending
+                method from Part A and create mosaics! Below are the mosaics, with the manual
+                on the left side for comparison, and the automatic one on the right side
+            </p>
+            <div class="py-6 ml-6 mr-6">
+                <section class="flex justify-center gap-2 m-2">
                     <div class="text-center w-1/2">
                         <img src="./images/asian_large_blended_2.png"
                             alt="None"
                             class="rounded-lg shadow-md" />
                     </div>
                     <div class="text-center w-1/2">
-                        <img src="./images/asian_large_blended_bin_2.png"
+                        <img src="./images/asian_large_blended_auto.png"
                             alt="None"
                             class="rounded-lg shadow-md" />
                     </div>
                 </section>
-                <p class="text-gray-700 text-center py-2">
-                    The composite images for nearest neighbors (left) and bilinear (right)
-                </p>
+                <section class="flex justify-center gap-2 m-2">
+                    <div class="text-center w-1/2">
+                        <img src="./images/animals_large_blended.png"
+                            alt="None"
+                            class="rounded-lg shadow-md" />
+                    </div>
+                    <div class="text-center w-1/2">
+                        <img src="./images/animals_large_blended_auto.png"
+                            alt="None"
+                            class="rounded-lg shadow-md" />
+                    </div>
+                </section>
+                <section class="flex justify-center gap-2 m-2">
+                    <div class="text-center w-1/2">
+                        <img src="./images/camp_large_blended.png"
+                            alt="None"
+                            class="rounded-lg shadow-md" />
+                    </div>
+                    <div class="text-center w-1/2">
+                        <img src="./images/camp_large_blended_auto.png"
+                            alt="None"
+                            class="rounded-lg shadow-md" />
+                    </div>
+                </section>
             </div>
+            <p class="text-gray-700">
+                Overall, it seems looks like the automatic mosaic is a little bit worse than manual,
+                but this makes sense, as us humans can use our past knowledge and understanding 
+                of the scene to find better correspondences. However, the automatic takes a lot
+                less work!
+            </p>
         </div>
     </div>
-    
 </body>
 </html>

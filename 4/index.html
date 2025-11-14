@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- KaTeX CSS + JS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" />
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+      onload="renderMathInElement(document.body,{
+        delimiters:[
+          {left:'$$', right:'$$', display:true},
+          {left:'\\[', right:'\\]', display:true},
+          {left:'\\(', right:'\\)', display:false}
+        ],
+        throwOnError:false
+      });"></script>
+    <title>My Portfolio - Project 3</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="flex justify-between items-center px-6 py-4 border-b border-gray-200">
+        <h2 class="text-2xl font-bold text-blue-600">CS180 Portfolio</h1>
+        <ul class="flex gap-6">
+        <li><a href="../index.html" class="hover:text-blue-600 transition">Home</a></li>
+        <li><a href="../0/index.html" class="hover:text-blue-600 transition">Project 0</a></li>
+        <li><a href="../1/index.html" class="hover:text-blue-600 transition">Project 1</a></li>
+        <li><a href="../2/index.html" class="hover:text-blue-600 transition">Project 2</a></li>
+        <li><a href="../3/index.html" class="hover:text-blue-600 transition">Project 3</a></li>
+        <li><a href="#" class="hover:text-blue-600 transition">Project 4</a></li>
+        </ul>
+    </nav>
+    <div class="m-8">
+        <div class="p-6 border-gray-400 bg-blue-600 rounded-lg m-6">
+            <h1 class="text-white text-4xl md:text-5xl font-bold text-center">Project 4: Neural Radiance Field!</h1>
+        </div>
+        <p class="text-gray-700 text-center">
+            In this project, we create a Nerf!
+        </p>
+        <div class="p-4 border-gray-400 bg-green-600 rounded-lg m-4">
+            <h1 class="text-white text-3xl md:text-4xl font-bold text-center">Part 0: Calibrating Your Camera and Capturing a 3D Scan</h1>
+        </div>
+        <div class="p-4 m-4">
+            <p class="text-gray-700">
+                We obtain the intrinsics of our camera from calibration on AruCo tags, and the extrinsics of each of our camera positions from
+                images of 3d objects (a penguin airpod case) next to an AruCo tag.
+            </p>
+            <p class="text-gray-700">
+                Below are some of the images that I took for reference. The pictures above with the 6 tags are for calibration, while the below
+                pictures with 1 tag and a penguin airpod case are the object images.
+            </p>
+            <div class="py-6 ml-6 mr-6">
+                <section class="flex justify-center gap-2">
+                        <div class="text-center w-1/5">
+                            <img src="./images/IMG_7313.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/5">
+                            <img src="./images/IMG_7316.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/5">
+                            <img src="./images/IMG_7322.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                </section>
+                <section class="flex justify-center gap-2">
+                        <div class="text-center w-1/5">
+                            <img src="./images/IMG_7229.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/5">
+                            <img src="./images/IMG_7243.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/5">
+                            <img src="./images/IMG_7254.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                </section>
+                <p class="text-gray-700 text-center py-2">
+                    Below here are the resulting visualizations of the obtained camera poses and direction (frustums).
+                </p>
+            </div>
+            <div class="py-6 ml-6 mr-6">
+                <section class="flex justify-center gap-2">
+                    <div class="text-center w-1/4">
+                        <img src="./images/animalsleft.jpeg"
+                            alt="None"
+                            class="rounded-lg shadow-md" />
+                    </div>
+                    <div class="text-center w-1/4">
+                        <img src="./images/animalsmid.jpeg"
+                            alt="None"
+                            class="rounded-lg shadow-md" />
+                    </div>
+                    <div class="text-center w-1/4">
+                        <img src="./images/animalsright.jpeg"
+                            alt="None"
+                            class="rounded-lg shadow-md" />
+                    </div>
+                </section>
+            </div>
+        <div class="p-4 border-gray-400 bg-green-600 rounded-lg m-4">
+            <h1 class="text-white text-3xl md:text-4xl font-bold text-center">Part 1: Fit a Neural Field to a 2D Image</h1>
+        </div>
+        <div class="p-4 m-4">
+            <p class="text-gray-700 m-2">
+                In this section, we fit a neural field to two images. I used the same MLP neural network
+                from the spec (architecture shown below). This neural network has four linear layers of width
+                 256, 256, 256, and 3. Each layer is followed by a RELU activation function except for the
+                 fourth layer, which is followed by a Sigmoid activation function to constrain
+                 output from 0 to 1. Before our inputs are passed into a model, we positionally encode the
+                 points at a max frequency of L = 10, leading to 2 (original x, y) + 10 * 2 (sin and cosine) * 2 (x, y).
+                 I used the positional encoding equation given in the spec. The overall input is pixel coordinates to RGB.
+            </p>
+            <div class="py-6 mx-6 my-2">
+                <section class="flex justify-center gap-2">
+                        <div class="text-center w-1/2">
+                            <img src="./images/mlp_img.jpg"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                </section>
+                <p class="py-6 mx-6 my-2">
+                    Here are the training results on the given test image and my own image
+                    at steps: 0, 50, 120, 200, 500, final (3000), and then the original image
+                </p>
+                <section class="flex justify-center gap-2 my-2">
+                        <div class="text-center w-1/7">
+                            <img src="./images/step_0000.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/7">
+                            <img src="./images/step_0050.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/7">
+                            <img src="./images/step_0120.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/7">
+                            <img src="./images/step_0200.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/7">
+                            <img src="./images/step_0500.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/7 pl-6 mx-2">
+                            <img src="./images/fox.jpg"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                </section>
+                <section class="flex justify-center gap-2 my-2">
+                        <div class="text-center w-1/7">
+                            <img src="./images/penguin_step_0000.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/7">
+                            <img src="./images/penguin_step_0050.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/7">
+                            <img src="./images/penguin_step_0120.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/7">
+                            <img src="./images/penguin_step_0200.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/7">
+                            <img src="./images/penguin_step_0500.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/7 pl-6 mx-2">
+                            <img src="./images/penguin.jpg"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                </section>
+                <p class="text-gray-700 text-center py-2 my-2">
+                    I then vary the parameters width and L, setting width to 64 (so the linear layers
+                    are width 64, 64, 64, 3) and L to 4. Here are the results for all four combinations.
+                    These results are very interesting! It seems that decreasing max frequency (L) makes the
+                    image more smooth and less detailed, while decreasing width adds noise to the
+                    image.
+                </p>
+                <section class="flex justify-center gap-2">
+                        <div class="text-center w-1/5">
+                            <img src="./images/final.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/5">
+                            <img src="./images/final_10_64.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/5">
+                            Top left: L=10, width=256. Top right: L=10, width=64
+                        </div>
+                        <div class="text-center w-1/5">
+                            <img src="./images/penguin_final.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/5">
+                            <img src="./images/penguin_final_10_64.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                </section>
+                <section class="flex justify-center gap-2">
+                        <div class="text-center w-1/5">
+                            <img src="./images/final_4_256.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/5">
+                            <img src="./images/final_4_64.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/5">
+                            Top left: L=4, width=256. Top right: L=4, width=64
+                        </div>
+                        <div class="text-center w-1/5">
+                            <img src="./images/penguin_final_4_256.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/5">
+                            <img src="./images/penguin_final_4_64.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                </section>
+            </div>
+            <p class="text-gray-700 m-2">
+                To evaluate reconstruction quality of an image, I used PSNR (Peak signal-to-noise). Here is
+                ratio curve for the stuffed animal image with L=10 and width=256. After around the 150th iteration,
+                the PSNR plateau'd and only had smaller improvements.
+            </p>
+            <div class="py-6 mx-6 my-2">
+                <section class="flex justify-center gap-2">
+                        <div class="text-center w-1/2">
+                            <img src="./images/psnr_curve.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                </section>
+            </div>
+        </div>
+        <div class="p-4 border-gray-400 bg-green-600 rounded-lg m-4">
+            <h1 class="text-white text-3xl md:text-4xl font-bold text-center">Part 2: Fit a Neural Radiance Field from Multi-view Images</h1>
+        </div>
+        <div class="p-4 m-4">
+            <h2 class="font-bold text-2xl">Part 2.1 and 2.2: Utility functions for rendering</h2>
+            <p class="text-gray-700 m-2">
+                In this section, we create some utility functions to convert a 2d pixel on a camera to a ray.
+                The ray can then be projected into the 3D space via sampling, allowing for the volumetric rendering.
+            </p>
+            <div class="py-6 mx-6 my-2">
+                <section class="flex justify-center gap-2">
+                        <div class="text-center">
+                            <img src="./images/h.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center">
+                            <img src="./images/hbin.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                </section>
+                <p class="text-gray-700 text-center py-2 my-2">
+                    I then vary the parameters width and L, setting width to 64 (so the linear layers
+                    are width 64, 64, 64, 3) and L to 4. Here are the results for all four combinations.
+                </p>
+                <section class="flex justify-center gap-2">
+                        <div class="text-center w-2/3">
+                            <img src="./images/localmax.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                </section>
+            </div>
+            <h2 class="font-bold text-2xl">Part 2.3: Utility functions for rendering</h2>
+            <p class="text-gray-700 m-2">
+                To evaluate reconstruction quality of an image, here is the PSNR (Peak signal-to-noise)
+                ratio curve for the stuffed animal images.
+            </p>
+            <div class="py-6 mx-6 my-2">
+                <section class="flex justify-center gap-2">
+                        <div class="text-center w-2/3">
+                            <img src="./images/anms.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

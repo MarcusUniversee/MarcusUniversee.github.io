@@ -90,22 +90,20 @@
                 </section>
                 <p class="text-gray-700 text-center py-2">
                     Below here are the resulting visualizations of the obtained camera poses and direction (frustums).
+                    The positions of each camera are obtained with the camera to world matrix (inverse of extrinsics).
+                    Both images are the same visualization from different perspectives, while the red sphere is the origin.
+                    We then save the images, intrinsics, and extrinsics into a dataset for later NerF training.
                 </p>
             </div>
             <div class="py-6 ml-6 mr-6">
                 <section class="flex justify-center gap-2">
-                    <div class="text-center w-1/4">
-                        <img src="./images/animalsleft.jpeg"
+                    <div class="text-center w-1/2">
+                        <img src="./web_images/part0viser1.png"
                             alt="None"
                             class="rounded-lg shadow-md" />
                     </div>
-                    <div class="text-center w-1/4">
-                        <img src="./images/animalsmid.jpeg"
-                            alt="None"
-                            class="rounded-lg shadow-md" />
-                    </div>
-                    <div class="text-center w-1/4">
-                        <img src="./images/animalsright.jpeg"
+                    <div class="text-center w-1/2">
+                        <img src="./web_images/part0viser2.png"
                             alt="None"
                             class="rounded-lg shadow-md" />
                     </div>
@@ -281,45 +279,349 @@
             <p class="text-gray-700 m-2">
                 In this section, we create some utility functions to convert a 2d pixel on a camera to a ray.
                 The ray can then be projected into the 3D space via sampling, allowing for the volumetric rendering.
+                This is done with the following steps/functions
+            </p>
+            <ol class="list-decimal list-inside space-y-2 text-gray-700 ml-2 m-2">
+                <li>
+                    Camera to world conversion: Using the c2w matrix, transforms a point from camera to world
+                    This is simply done with matrix multiplication.
+                </li>
+                <li>
+                    Pixel to camera conversion: Using the instrinsic matrix, transforms a point from pixel
+                    coords (u,v) to camera coords (x_c, y_c, z_c). Since the dimension is effectively increasing,
+                    we define a parameter s which represents the depth of the point along the optical axis.
+                    For training, we set this to 1.
+                </li>
+                <li>
+                    Pixel to ray: Using the previous to functions, we convert a pixel to its world coordinates.
+                    The ray origin is the translation component of the camera to world matrix, while the direction
+                    is given by the normalized difference between the pixel's world coordinates and the ray origin,
+                    (which is the same as the camera origin).
+                </li>
+                <li>
+                    Sampling rays: To sample rays, I create a torch Dataset and use torch's Dataloader class
+                    to sample rays. To populate the initial rays data, I get a 2d array of all the pixel
+                    points based on my image width/height. Then, I call the pixel to ray function on every
+                    camera to world matrix and store these as a torch tensor. Then, in the Dataset's 
+                    __getitem__(self, id)
+                    function, I simply return the populated ray and image tensors indexed by the id.
+                </li>
+                <li>
+                    Sampling along rays: For each ray, we sample N points along the ray between near and far bounds.
+                    I use stratified sampling to randomly sample points within evenly spaced intervals along the ray.
+                    However, this should only be used during training; for validation/test, we use uniform sampling.
+                    For the rest of the project, I set N to 64.
+                </li>
+            </ol>
+            <h2 class="font-bold text-2xl p-2 m-2">Part 2.3: Putting the Dataloading All Together</h2>
+            <p class="text-gray-700 m-2">
+                Using the torch Dataset and Dataloader I created in the previous part in sampling rays,
+                I can now sample pixels to get their resulting rays. To verify the work in the previous part,
+                I visualize randomly sampled rays from different camera positions.
+                Below are some visualizations of a ray from each camera for the given lego dataset.
+                The lines are the rays, while the points along the rays are the sampled points along the ray.
             </p>
             <div class="py-6 mx-6 my-2">
                 <section class="flex justify-center gap-2">
-                        <div class="text-center">
-                            <img src="./images/h.png"
+                        <div class="text-center w-1/2">
+                            <img src="./lego_images/viserlego0.png"
                                 alt="None"
                                 class="rounded-lg shadow-md" />
                         </div>
-                        <div class="text-center">
-                            <img src="./images/hbin.png"
-                                alt="None"
-                                class="rounded-lg shadow-md" />
-                        </div>
-                </section>
-                <p class="text-gray-700 text-center py-2 my-2">
-                    I then vary the parameters width and L, setting width to 64 (so the linear layers
-                    are width 64, 64, 64, 3) and L to 4. Here are the results for all four combinations.
-                </p>
-                <section class="flex justify-center gap-2">
-                        <div class="text-center w-2/3">
-                            <img src="./images/localmax.png"
+                        <div class="text-center w-1/2">
+                            <img src="./lego_images/viserlego1.png"
                                 alt="None"
                                 class="rounded-lg shadow-md" />
                         </div>
                 </section>
             </div>
-            <h2 class="font-bold text-2xl">Part 2.3: Utility functions for rendering</h2>
             <p class="text-gray-700 m-2">
-                To evaluate reconstruction quality of an image, here is the PSNR (Peak signal-to-noise)
-                ratio curve for the stuffed animal images.
+                And here are some visualizations of randomly samples rays
+                from a single camera.
             </p>
             <div class="py-6 mx-6 my-2">
                 <section class="flex justify-center gap-2">
-                        <div class="text-center w-2/3">
-                            <img src="./images/anms.png"
+                        <div class="text-center w-1/2">
+                            <img src="./lego_images/viserlego3.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/2">
+                            <img src="./lego_images/viserlego5.png"
                                 alt="None"
                                 class="rounded-lg shadow-md" />
                         </div>
                 </section>
+            </div>
+            <h2 class="font-bold text-2xl p-2 m-2">Part 2.4: Neural Radiance Field</h2>
+            <p class="text-gray-700 m-2">
+                Next, we implement the MLP for the Nerf. The architecture is shown in
+                the image below. This is straight from the spec, and we use the same
+                parameters for width. For positional encoding of the inputs, we use L=4.
+                Overall, the input is a 3D point (x, y, z) 
+                and a 2D viewing direction (theta, phi), and the output is
+                the RGB color and density at that point. In this implementation,
+                the 3D inputs are injected at the beginning and middle
+                to ensure that the model does not forget inputs. The view direction is only
+                added for the RGB output since it has no effect on density.
+            </p>
+            <div class="py-6 mx-6 my-2">
+                <section class="flex justify-center gap-2">
+                        <div class="text-center w-2/3">
+                            <img src="./lego_images/mlp_nerf.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                </section>
+            </div>
+            <h2 class="font-bold text-2xl p-2 m-2">Part 2.5: Volume Rendering and Training a Nerf</h2>
+            <p class="text-gray-700 m-2">
+                Next, we need a way to render the output of the Nerf MLP into an image.
+                This is done with volume rendering. For each pixel, we acculumate the
+                colors of sample points along the ray, scaled by their own alpha (opacity)
+                values, which are computed from density, as well as the running product
+                of (1 - alpha) values of all previous points along the ray.
+                This gives us the final color of the pixel, accounting for occlusions
+                and transparency. The equations for this process are given in the spec. 
+            </p>
+            <p class="text-gray-700 m-2">
+                We then train the Nerf MLP on the lego dataset. This is done using an
+                Adam optimizer with a learning rate of 5e-4 and a batch size of 10000 rays.
+                We run this for 5000 iterations and achieve the following results.
+            </p>
+            <div class="py-6 mx-6 my-2">
+                <section class="flex justify-center gap-2">
+                        <div class="text-center w-1/6">
+                            <img src="./lego_images/step_0000.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                            <p class="text-gray-700">Training Step 0</p>
+                        </div>
+                        <div class="text-center w-1/6">
+                            <img src="./lego_images/train_step_0100.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                            <p class="text-gray-700">Training Step 100</p>
+                        </div>
+                        <div class="text-center w-1/6">
+                            <img src="./lego_images/train_step_0500.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                            <p class="text-gray-700">Training Step 500</p>
+                        </div>
+                        <div class="text-center w-1/6">
+                            <img src="./lego_images/train_step_1000.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                            <p class="text-gray-700">Training Step 1000</p>
+                        </div>
+                        <div class="text-center w-1/6">
+                            <img src="./lego_images/train_step_2000.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                            <p class="text-gray-700">Training Step 2000</p>
+                        </div>
+                        <div class="text-center w-1/6">
+                            <img src="./lego_images/train_step_5000.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                            <p class="text-gray-700">Training Step 5000</p>
+                        </div>
+                </section>
+                <p class="text-gray-700 m-2">Here are the validation images at time steps</p>
+                <section class="flex justify-center gap-2 my-2">
+                        <div class="text-center w-1/6">
+                            <img src="./lego_images/val_step_0100_img1.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                            <p class="text-gray-700">Training Step 100</p>
+                        </div>
+                        <div class="text-center w-1/6">
+                            <img src="./lego_images/val_step_0200_img1.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                            <p class="text-gray-700">Training Step 200</p>
+                        </div>
+                        <div class="text-center w-1/6">
+                            <img src="./lego_images/val_step_0500_img1.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                            <p class="text-gray-700">Training Step 500</p>
+                        </div>
+                        <div class="text-center w-1/6">
+                            <img src="./lego_images/val_step_1000_img1.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                            <p class="text-gray-700">Training Step 1000</p>
+                        </div>
+                        <div class="text-center w-1/6">
+                            <img src="./lego_images/val_step_2000_img1.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                            <p class="text-gray-700">Training Step 2000</p>
+                        </div>
+                        <div class="text-center w-1/6">
+                            <img src="./lego_images/val_step_5000_img1.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                            <p class="text-gray-700">Training Step 5000</p>
+                        </div>
+                </section>
+                <p class="text-gray-700 m-2">Here are the PSNR curves at time steps</p>
+                <section class="flex justify-center gap-2 my-2">
+                        <div class="text-center w-1/2">
+                            <img src="./lego_images/psnr_curve_train.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                            <p class="text-gray-700">Training PSNR</p>
+                        </div>
+                        <div class="text-center w-1/2">
+                            <img src="./lego_images/psnr_curve_val.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                            <p class="text-gray-700">Validation PSNR</p>
+                        </div>
+                </section>
+                <p class="text-gray-700 m-2">
+                    Here is the final gif render from running inference on the test set
+                    with the trained model.
+                </p>
+                <section class="flex justify-center gap-2 my-2">
+                        <div class="text-center w-4/1">
+                            <img src="./lego_images/orbit_looping.gif"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                </section>
+
+            </div>
+            <h2 class="font-bold text-2xl p-2 m-2">Part 2.6: Training with your own data</h2>
+            <p class="text-gray-700 m-2">
+                In this section, we use the same method to train on our own captured dataset.
+                One difference from the previous section is that the image resolution is significantly
+                higher (over 10x), so I downscale the images when creating the dataset to save
+                gpu memory and training time. Due to this,
+                the focal lengths in the intrinsic matrix must also be downscaled by the same factor.
+                For my data, I downscaled by 2x for training, and downscaled another 4x only when
+                rendering images to png. Another difference is that I trained for 10000 iterations,
+                double the previous section. All other parameters stayed the same
+            </p>
+            <div class="py-6 mx-6 my-2">
+                <section class="flex justify-center gap-2">
+                        <div class="text-center w-1/6">
+                            <img src="./airpod_images/step_0000.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                            <p class="text-gray-700">Training Step 0</p>
+                        </div>
+                        <div class="text-center w-1/6">
+                            <img src="./airpod_images/train_step_0100.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                            <p class="text-gray-700">Training Step 100</p>
+                        </div>
+                        <div class="text-center w-1/6">
+                            <img src="./airpod_images/train_step_0500.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                            <p class="text-gray-700">Training Step 500</p>
+                        </div>
+                        <div class="text-center w-1/6">
+                            <img src="./airpod_images/train_step_1000.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                            <p class="text-gray-700">Training Step 1000</p>
+                        </div>
+                        <div class="text-center w-1/6">
+                            <img src="./airpod_images/train_step_3000.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                            <p class="text-gray-700">Training Step 3000</p>
+                        </div>
+                        <div class="text-center w-1/6">
+                            <img src="./airpod_images/train_step_10000.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                            <p class="text-gray-700">Training Step 10000</p>
+                        </div>
+                </section>
+                <p class="text-gray-700 m-2">
+                    Here are the validation images at time steps. 
+                </p>
+                <section class="flex justify-center gap-2 my-2">
+                        <div class="text-center w-1/6">
+                            <img src="./airpod_images/val_step_0100_img1.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                            <p class="text-gray-700">Training Step 100</p>
+                        </div>
+                        <div class="text-center w-1/6">
+                            <img src="./airpod_images/val_step_0500_img1.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                            <p class="text-gray-700">Training Step 500</p>
+                        </div>
+                        <div class="text-center w-1/6">
+                            <img src="./airpod_images/val_step_1000_img1.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                            <p class="text-gray-700">Training Step 1000</p>
+                        </div>
+                        <div class="text-center w-1/6">
+                            <img src="./airpod_images/val_step_2000_img1.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                            <p class="text-gray-700">Training Step 2000</p>
+                        </div>
+                        <div class="text-center w-1/6">
+                            <img src="./airpod_images/val_step_5000_img1.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                            <p class="text-gray-700">Training Step 5000</p>
+                        </div>
+                        <div class="text-center w-1/6">
+                            <img src="./airpod_images/val_step_10000_img1.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                            <p class="text-gray-700">Training Step 10000</p>
+                        </div>
+                </section>
+                <p class="text-gray-700 m-2">Here are the PSNR curves at time steps</p>
+                <section class="flex justify-center gap-2 my-2">
+                        <div class="text-center w-1/2">
+                            <img src="./airpod_images/psnr_curve_train.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                            <p class="text-gray-700">Training PSNR</p>
+                        </div>
+                        <div class="text-center w-1/2">
+                            <img src="./airpod_images/psnr_curve_val.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                            <p class="text-gray-700">Validation PSNR</p>
+                        </div>
+                </section>
+                <p class="text-gray-700 m-2">Here is the loss training curve</p>
+                <section class="flex justify-center gap-2 my-2">
+                        <div class="text-center w-1/2">
+                            <img src="./airpod_images/loss_curve.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                            <p class="text-gray-700">Training Loss Curve</p>
+                        </div>
+                </section>
+                <p class="text-gray-700 m-2">
+                    Here is the final gif render from running inference on the test set
+                    with the trained model.
+                </p>
+                <section class="flex justify-center gap-2 my-2">
+                        <div class="text-center w-3/1">
+                            <img src="./airpod_images/orbit_looping.gif"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                </section>
+
             </div>
         </div>
     </div>

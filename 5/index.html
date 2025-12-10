@@ -67,6 +67,7 @@
             <p class="text-gray-700">
                 Here are the results on num inference steps = 20. The top row are the images after
                 stage 1 (64x64), while the bottom row are the images after stage 2 (256x256).
+                For this and the rest of the project, I used seed = 100.
             </p>
             <div class="py-6 ml-6 mr-6">
                 <section class="flex justify-center gap-2">
@@ -166,41 +167,41 @@
                 These kernel sizes could be tuned further for marginally better results.
             </p>
             <div class="py-6 mx-6 my-2">
-                <section class="flex justify-center gap-2">
+                <section class="flex justify-center gap-2 py-2">
                         <div class="text-center w-1/4">
-                            <p>t=250</p>
+                            <p>Noisy Campanile at t=250</p>
                             <img src="./part1.1-1.2_imgs/noise_250.png"
                                 alt="None"
                                 class="w-full h-auto rounded-lg shadow-md" />
                         </div>
                         <div class="text-center w-1/4">
-                            <p>t=500</p>
+                            <p>Noisy Campanile at t=500</p>
                             <img src="./part1.1-1.2_imgs/noise_500.png"
                                 alt="None"
                                 class="w-full h-auto rounded-lg shadow-md" />
                         </div>
                         <div class="text-center w-1/4">
-                            <p>t=750</p>
+                            <p>Noisy Campanile at t=750</p>
                             <img src="./part1.1-1.2_imgs/noise_750.png"
                                 alt="None"
                                 class="w-full h-auto rounded-lg shadow-md" />
                         </div>
                 </section>
-                <section class="flex justify-center gap-2">
+                <section class="flex justify-center gap-2 py-2">
                         <div class="text-center w-1/4">
-                            <p>t=250</p>
+                            <p>Gaussian Blur Denoising at t=250</p>
                             <img src="./part1.1-1.2_imgs/gaussian_250.png"
                                 alt="None"
                                 class="w-full h-auto rounded-lg shadow-md" />
                         </div>
                         <div class="text-center w-1/4">
-                            <p>t=500</p>
+                            <p>Gaussian Blur Denoising at t=500</p>
                             <img src="./part1.1-1.2_imgs/gaussian_500.png"
                                 alt="None"
                                 class="w-full h-auto rounded-lg shadow-md" />
                         </div>
                         <div class="text-center w-1/4">
-                            <p>t=750</p>
+                            <p>Gaussian Blur Denoising at t=750</p>
                             <img src="./part1.1-1.2_imgs/gaussian_750.png"
                                 alt="None"
                                 class="w-full h-auto rounded-lg shadow-md" />
@@ -226,42 +227,54 @@
                 </li>
             </ol>
             <div class="py-6 mx-6 my-2">
-                <section class="flex justify-center gap-2">
+                <section class="flex justify-center gap-2 py-2">
                         <div class="text-center w-1/4">
-                            <p>t=250</p>
+                            <p>Noisy Campanile at t=250</p>
                             <img src="./part1.1-1.2_imgs/noise_250.png"
                                 alt="None"
                                 class="w-full h-auto rounded-lg shadow-md" />
                         </div>
                         <div class="text-center w-1/4">
-                            <p>t=500</p>
+                            <p>Noisy Campanile at t=500</p>
                             <img src="./part1.1-1.2_imgs/noise_500.png"
                                 alt="None"
                                 class="w-full h-auto rounded-lg shadow-md" />
                         </div>
                         <div class="text-center w-1/4">
-                            <p>t=750</p>
+                            <p>Noisy Campanile at t=750</p>
                             <img src="./part1.1-1.2_imgs/noise_750.png"
                                 alt="None"
                                 class="w-full h-auto rounded-lg shadow-md" />
                         </div>
-                </section>
-                <section class="flex justify-center gap-2">
                         <div class="text-center w-1/4">
-                            <p>t=250</p>
+                            <p>Original</p>
+                            <img src="./part1.1-1.2_imgs/campanile.png"
+                                alt="None"
+                                class="w-full h-auto rounded-lg shadow-md" />
+                        </div>
+                </section>
+                <section class="flex justify-center gap-2 py-2">
+                        <div class="text-center w-1/4">
+                            <p>One-Step Denoised Campanile at t=250</p>
                             <img src="./part1.3_imgs/250.png"
                                 alt="None"
                                 class="w-full h-auto rounded-lg shadow-md" />
                         </div>
                         <div class="text-center w-1/4">
-                            <p>t=500</p>
+                            <p>One-Step Denoised Campanile at t=500</p>
                             <img src="./part1.3_imgs/500.png"
                                 alt="None"
                                 class="w-full h-auto rounded-lg shadow-md" />
                         </div>
                         <div class="text-center w-1/4">
-                            <p>t=750</p>
+                            <p>One-Step Denoised Campanile at t=750</p>
                             <img src="./part1.3_imgs/750.png"
+                                alt="None"
+                                class="w-full h-auto rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/4">
+                            <p>Original</p>
+                            <img src="./part1.1-1.2_imgs/campanile.png"
                                 alt="None"
                                 class="w-full h-auto rounded-lg shadow-md" />
                         </div>
@@ -613,17 +626,29 @@
             </p>
             <div class="py-3 mx-6 my-2">
                 <section class="flex justify-center gap-2 py-3">
-                        <div class="text-center w-full">
-                            <p class="text-xl py-1">An ink illustration of a human face | An ink illustration of a tree</p>
+                        <div class="text-center w-1/4">
+                            <p class="text-xl py-1">An ink illustration of a human face</p>
                             <img src="./part1.8_imgs/man_tree.png"
+                                alt="None"
+                                class="w-full h-auto rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/4">
+                            <p class="text-xl py-1">An ink illustration of a tree</p>
+                            <img src="./part1.8_imgs/tree_man.png"
                                 alt="None"
                                 class="w-full h-auto rounded-lg shadow-md" />
                         </div>
                 </section>
                 <section class="flex justify-center gap-2 py-3">
-                        <div class="text-center w-full">
-                            <p class="text-xl py-1">An old painting of an old man | An oil painting of people around a campfire</p>
-                            <img src="./part1.8_imgs/.png"
+                        <div class="text-center w-1/4">
+                            <p class="text-xl py-1">An sketch of a penguin</p>
+                            <img src="./part1.8_imgs/penguin_giraffe.png"
+                                alt="None"
+                                class="w-full h-auto rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/4">
+                            <p class="text-xl py-1">An sketch of a giraffe</p>
+                            <img src="./part1.8_imgs/giraffe_penguin.png"
                                 alt="None"
                                 class="w-full h-auto rounded-lg shadow-md" />
                         </div>
@@ -636,19 +661,33 @@
             </p>
             <div class="py-3 mx-6 my-2">
                 <section class="flex justify-center gap-2 py-3">
-                        <div class="text-center w-full">
-                            <p class="text-xl py-1">DO A SECOND ONE</p>
-                            <img src="./part1.9_imgs/.png"
+                        
+                        <div class="text-center w-1/3">
+                            <p class="text-xl py-1">Hybrid image of a feather and bird</p>
+                            <img src="./part1.9_imgs/bird_feather.png"
                                 alt="None"
                                 class="w-full h-auto rounded-lg shadow-md" />
                         </div>
+                        <div class="text-center w-1/5">
+                            <p class="text-xl py-1">Smaller image (to see bird better)</p>
+                            <img src="./part1.9_imgs/bird_feather.png"
+                                alt="None"
+                                class="w-1/4 h-auto rounded-lg shadow-md" />
+                        </div>
                 </section>
                 <section class="flex justify-center gap-2 py-3">
-                        <div class="text-center w-full">
-                            <p class="text-xl py-1">DO YOUR OWN</p>
-                            <img src="./part1.9_imgs/.png"
+                        
+                        <div class="text-center w-1/3">
+                            <p class="text-xl py-1">Hybrid image of a canyon and a teddy bear</p>
+                            <img src="./part1.9_imgs/bear_canyon.png"
                                 alt="None"
                                 class="w-full h-auto rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/5">
+                            <p class="text-xl py-1">Smaller image (to see teddy bear better)</p>
+                            <img src="./part1.9_imgs/bear_canyon.png"
+                                alt="None"
+                                class="w-1/4 h-auto rounded-lg shadow-md" />
                         </div>
                 </section>
             </div>
@@ -678,54 +717,54 @@
             </p>
             <div class="py-6 mx-6 my-2">
                 <section class="flex justify-center gap-2">
-                        <div class="text-center w-1/7">
+                        <div class="text-center">
                             <p>0.0</p>
                             <img src="./partB1_imgs/camp0.png"
                                 alt="None"
-                                class="rounded-lg shadow-md" />
+                                class="rounded-lg shadow-md w-32" />
                         </div>
-                        <div class="text-center w-1/7">
+                        <div class="text-center">
                             <p>0.2</p>
                             <img src="./partB1_imgs/camp2.png"
                                 alt="None"
-                                class="rounded-lg shadow-md" />
+                                class="rounded-lg shadow-md w-32" />
                         </div>
-                        <div class="text-center w-1/7">
+                        <div class="text-center">
                             <p>0.4</p>
                             <img src="./partB1_imgs/camp4.png"
                                 alt="None"
-                                class="rounded-lg shadow-md" />
+                                class="rounded-lg shadow-md w-32" />
                         </div>
-                        <div class="text-center w-1/7">
+                        <div class="text-center">
                             <p>0.5</p>
                             <img src="./partB1_imgs/camp5.png"
                                 alt="NEEDS IMAGE"
-                                class="rounded-lg shadow-md" />
+                                class="rounded-lg shadow-md w-32" />
                         </div>
-                        <div class="text-center w-1/7">
+                        <div class="text-center">
                             <p>0.6</p>
                             <img src="./partB1_imgs/camp6.png"
                                 alt="None"
-                                class="rounded-lg shadow-md" />
+                                class="rounded-lg shadow-md w-32" />
                         </div>
-                        <div class="text-center w-1/7">
+                        <div class="text-center">
                             <p>0.8</p>
                             <img src="./partB1_imgs/camp8.png"
                                 alt="None"
-                                class="rounded-lg shadow-md" />
+                                class="rounded-lg shadow-md w-32" />
                         </div>
-                        <div class="text-center w-1/7">
+                        <div class="text-center">
                             <p>1.0</p>
                             <img src="./partB1_imgs/camp10.png"
                                 alt="None"
-                                class="rounded-lg shadow-md" />
+                                class="rounded-lg shadow-md w-32" />
                         </div>
                 </section>
             </div>
             <h2 class="font-bold text-2xl p-2 m-2">Part 1.2.1: Training the UNet</h2>
             <p class="text-gray-700 m-2">
                 After creating a torch dataset and dataloader, we trained the one-step UNet with
-                learning rate = 1e-4, hidden dimension = 128, batch size = 256, and $sigma$ = 0.5 for 5 epochs.
+                learning rate = 1e-4, hidden dimension = 128, batch size = 256, and $\sigma$ = 0.5 for 5 epochs.
                 Here was the training loss
             </p>
             <div class="py-6 mx-6 my-2">
@@ -765,19 +804,19 @@
             <div class="py-6 mx-6 my-2">
                 <section class="flex justify-center gap-2">
                     <div class="text-center w-1/3">
-                        <p>0.0</p>
+                        <p>$\sigma = 0.0$</p>
                         <img src="./partB1.2_imgs/noise0.png"
                             alt="None"
                             class="rounded-lg shadow-md" />
                     </div>
                     <div class="text-center w-1/3">
-                        <p>0.2</p>
+                        <p>$\sigma = 0.2$</p>
                         <img src="./partB1.2_imgs/noise2.png"
                             alt="None"
                             class="rounded-lg shadow-md" />
-                    </div>\
+                    </div>
                     <div class="text-center w-1/3">
-                        <p>0.4</p>
+                        <p>$\sigma = 0.4$</p>
                         <img src="./partB1.2_imgs/noise4.png"
                             alt="None"
                             class="rounded-lg shadow-md" />
@@ -785,14 +824,14 @@
                 </section>
                 <section class="flex justify-center gap-2">
                     <div class="text-center w-1/3">
-                        <p>0.5</p>
+                        <p>$\sigma = 0.5$</p>
                         <img src="./partB1.2_imgs/noise5.png"
                             alt="NEEDS IMAGE"
                             class="rounded-lg shadow-md" />
                     </div>
                 
                     <div class="text-center w-1/3">
-                        <p>0.6</p>
+                        <p>$\sigma = 0.6$</p>
                         <img src="./partB1.2_imgs/noise6.png"
                             alt="None"
                             class="rounded-lg shadow-md" />
@@ -800,13 +839,13 @@
                 </section>
                 <section class="flex justify-center gap-2">
                     <div class="text-center w-1/3">
-                        <p>0.8</p>
+                        <p>$\sigma = 0.8$</p>
                         <img src="./partB1.2_imgs/noise8.png"
                             alt="None"
                             class="rounded-lg shadow-md" />
                     </div>
                     <div class="text-center w-1/3">
-                        <p>1.0</p>
+                        <p>$\sigma = 1.0$</p>
                         <img src="./partB1.2_imgs/noise10.png"
                             alt="None"
                             class="rounded-lg shadow-md" />
@@ -835,7 +874,7 @@
                 </section>
             </div>
             <p class="text-gray-700 m-2">
-                Here are the results after the first and 5th epoch with noise level 0.5
+                Here are the results after the first and 5th epoch with pure noise
             </p>
             <div class="py-6 mx-4 my-2">
                 <section class="flex justify-center gap-6">
@@ -853,133 +892,160 @@
                         </div>
                 </section>
             </div>
-            <h2 class="font-bold text-2xl p-2 m-2">Part 2.6: Training with your own data</h2>
+            <h2 class="font-bold text-2xl p-2 m-2">Part 2.1: Time Conditioned UNet</h2>
             <p class="text-gray-700 m-2">
-                In this section, we use the same method to train on our own captured dataset.
-                One difference from the previous section is that the image resolution is significantly
-                higher (over 10x), so I downscale the images when creating the dataset to save
-                gpu memory and training time. Due to this,
-                the focal lengths in the intrinsic matrix must also be downscaled by the same factor.
-                For my data, I downscaled by 2x for training, and downscaled another 4x only when
-                rendering images to png. Another difference is that I trained for 10000 iterations,
-                double the previous section. All other parameters stayed the same
+                To iteratively denoise the image, we need to add flow-matching. The UNet
+                will predict the flow from the noisy data to clean data. We use linear interpolation
+                to construct the intermediate noisy samples. Here are the modifications we make to the
+                UNet
+            </p>
+            <div class="py-6 mx-4 my-2">
+                <section class="flex justify-center gap-6">
+                        <div class="text-center w-1/2">
+                            <img src="./time_conditioned_imgs/image.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                </section>
+            </div>
+            <h2 class="font-bold text-2xl p-2 m-2">Part 2.2: Training the Time Conditional UNet</h2>
+            <p class="text-gray-700 m-2">
+                Just like in Part 1, we train the UNet. Here is the training loss curve.
+                We use hidden dimension = 64, batch size=64, initial learning rate 1e-2,
+                and gamma=0.1^(0.1) for the exponential learning rate scheduler.
+            </p>
+            <div class="py-6 mx-4 my-2">
+                <section class="flex justify-center gap-6">
+                        <div class="text-center w-1/2">
+                            <img src="./time_conditioned_imgs/train_loss.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                </section>
+            </div>
+            <h2 class="font-bold text-2xl p-2 m-2">Part 2.3: Sampling from the Time Conditioned UNet</h2>
+            <p class="text-gray-700 m-2">
+                Here are the results after epoch 1, 5, and 10.
+                The first row is our inputs. This is essentially irrelevant since there is no class
+                conditioning. The second row is our pure noise inputs to the model.
+                The third row are the results.
             </p>
             <div class="py-6 mx-6 my-2">
                 <section class="flex justify-center gap-2">
-                        <div class="text-center w-1/6">
-                            <img src="./airpod_images/step_0000.png"
+                    
+                        <div class="text-center w-1/3">
+                            <p class="text-gray-700">Epoch 1</p>
+                            <img src="./time_conditioned_imgs/epoch1.png"
                                 alt="None"
                                 class="rounded-lg shadow-md" />
-                            <p class="text-gray-700">Training Step 0</p>
                         </div>
-                        <div class="text-center w-1/6">
-                            <img src="./airpod_images/train_step_0100.png"
+                        <div class="text-center w-1/3">
+                            <p class="text-gray-700">Epoch 5</p>
+                            <img src="./time_conditioned_imgs/epoch5.png"
                                 alt="None"
                                 class="rounded-lg shadow-md" />
-                            <p class="text-gray-700">Training Step 100</p>
                         </div>
-                        <div class="text-center w-1/6">
-                            <img src="./airpod_images/train_step_0500.png"
+                        <div class="text-center w-1/3">
+                            <p class="text-gray-700">Epoch 10</p>
+                            <img src="./time_conditioned_imgs/epoch10.png"
                                 alt="None"
                                 class="rounded-lg shadow-md" />
-                            <p class="text-gray-700">Training Step 500</p>
-                        </div>
-                        <div class="text-center w-1/6">
-                            <img src="./airpod_images/train_step_1000.png"
-                                alt="None"
-                                class="rounded-lg shadow-md" />
-                            <p class="text-gray-700">Training Step 1000</p>
-                        </div>
-                        <div class="text-center w-1/6">
-                            <img src="./airpod_images/train_step_3000.png"
-                                alt="None"
-                                class="rounded-lg shadow-md" />
-                            <p class="text-gray-700">Training Step 3000</p>
-                        </div>
-                        <div class="text-center w-1/6">
-                            <img src="./airpod_images/train_step_10000.png"
-                                alt="None"
-                                class="rounded-lg shadow-md" />
-                            <p class="text-gray-700">Training Step 10000</p>
                         </div>
                 </section>
-                <p class="text-gray-700 m-2">
-                    Here are the validation images at time steps. 
-                </p>
-                <section class="flex justify-center gap-2 my-2">
-                        <div class="text-center w-1/6">
-                            <img src="./airpod_images/val_step_0100_img1.png"
-                                alt="None"
-                                class="rounded-lg shadow-md" />
-                            <p class="text-gray-700">Training Step 100</p>
-                        </div>
-                        <div class="text-center w-1/6">
-                            <img src="./airpod_images/val_step_0500_img1.png"
-                                alt="None"
-                                class="rounded-lg shadow-md" />
-                            <p class="text-gray-700">Training Step 500</p>
-                        </div>
-                        <div class="text-center w-1/6">
-                            <img src="./airpod_images/val_step_1000_img1.png"
-                                alt="None"
-                                class="rounded-lg shadow-md" />
-                            <p class="text-gray-700">Training Step 1000</p>
-                        </div>
-                        <div class="text-center w-1/6">
-                            <img src="./airpod_images/val_step_2000_img1.png"
-                                alt="None"
-                                class="rounded-lg shadow-md" />
-                            <p class="text-gray-700">Training Step 2000</p>
-                        </div>
-                        <div class="text-center w-1/6">
-                            <img src="./airpod_images/val_step_5000_img1.png"
-                                alt="None"
-                                class="rounded-lg shadow-md" />
-                            <p class="text-gray-700">Training Step 5000</p>
-                        </div>
-                        <div class="text-center w-1/6">
-                            <img src="./airpod_images/val_step_10000_img1.png"
-                                alt="None"
-                                class="rounded-lg shadow-md" />
-                            <p class="text-gray-700">Training Step 10000</p>
-                        </div>
-                </section>
-                <p class="text-gray-700 m-2">Here are the PSNR curves at time steps</p>
-                <section class="flex justify-center gap-2 my-2">
+            </div>
+            <h2 class="font-bold text-2xl p-2 m-2">Part 2.4-2.5: Adding Class-Conditioning to the UNet</h2>
+            <p class="text-gray-700 m-2">
+                In this section, we add two more FCBlocks in the same part as the time-conditioning,
+                scaling the output, while the time conditioning adds to it. However, our UNet should still
+                work without class, so we "dropout" the class conditioninig 10% of the time.
+                We represent the class input as a one-hot vector of size 10 (one for each digit).
+            </p>
+            <p class="text-gray-700 m-2">
+                Just like in Part 1, we train the UNet. Here is the training loss curve.
+                We use hidden dimension = 64, batch size=64, initial learning rate 1e-2,
+                and gamma=0.1^(0.1) for the exponential learning rate scheduler.
+            </p>
+            <div class="py-6 mx-4 my-2">
+                <section class="flex justify-center gap-6">
                         <div class="text-center w-1/2">
-                            <img src="./airpod_images/psnr_curve_train.png"
+                            <img src="./class_condition_imgs/train_loss.png"
                                 alt="None"
                                 class="rounded-lg shadow-md" />
-                            <p class="text-gray-700">Training PSNR</p>
                         </div>
+                </section>
+            </div>
+            <h2 class="font-bold text-2xl p-2 m-2">Part 2.6: Sampling from the Class & Time Conditioned UNet</h2>
+            <p class="text-gray-700 m-2">
+                Here are the results after epoch 1, 5, and 10. The first row is our input digits.
+                For inputs, these are represented by one-hot vectors.
+                The second row is pure noise. The third row is the output.
+            </p>
+            <div class="py-6 mx-6 my-2">
+                <section class="flex justify-center gap-2">
+                    
+                        <div class="text-center w-1/3">
+                            <p class="text-gray-700">Epoch 1</p>
+                            <img src="./class_condition_imgs/epoch1.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/3">
+                            <p class="text-gray-700">Epoch 5</p>
+                            <img src="./class_condition_imgs/epoch5.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/3">
+                            <p class="text-gray-700">Epoch 10</p>
+                            <img src="./class_condition_imgs/epoch10.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                </section>
+            </div>
+            <p class="text-gray-700 m-2">
+                Now, lets try doing this without the scheduler. To compensate,
+                we lowered the learning rate to 5e-3. No other changes
+                were made
+            </p>
+            <div class="py-6 mx-4 my-2">
+                <section class="flex justify-center gap-6">
                         <div class="text-center w-1/2">
-                            <img src="./airpod_images/psnr_curve_val.png"
-                                alt="None"
-                                class="rounded-lg shadow-md" />
-                            <p class="text-gray-700">Validation PSNR</p>
-                        </div>
-                </section>
-                <p class="text-gray-700 m-2">Here is the loss training curve</p>
-                <section class="flex justify-center gap-2 my-2">
-                        <div class="text-center w-1/2">
-                            <img src="./airpod_images/loss_curve.png"
-                                alt="None"
-                                class="rounded-lg shadow-md" />
-                            <p class="text-gray-700">Training Loss Curve</p>
-                        </div>
-                </section>
-                <p class="text-gray-700 m-2">
-                    Here is the final gif render from running inference on the test set
-                    with the trained model.
-                </p>
-                <section class="flex justify-center gap-2 my-2">
-                        <div class="text-center w-3/1">
-                            <img src="./airpod_images/orbit_looping.gif"
+                            <img src="./no_scheduler_imgs/train_loss.png"
                                 alt="None"
                                 class="rounded-lg shadow-md" />
                         </div>
                 </section>
-
+            </div>
+            <p class="text-gray-700 m-2">
+                Here are the results after epoch 1, 5, and 10 for the 
+                class conditioned UNet without a scheduler. The first row is our input digits.
+                For inputs, these are represented by one-hot vectors.
+                The second row is pure noise. The third row is the output.
+                The same performance is roughly maintained
+            </p>
+            <div class="py-6 mx-6 my-2">
+                <section class="flex justify-center gap-2">
+                    
+                        <div class="text-center w-1/3">
+                            <p class="text-gray-700">Epoch 1</p>
+                            <img src="./no_scheduler_imgs/epoch1.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/3">
+                            <p class="text-gray-700">Epoch 5</p>
+                            <img src="./no_scheduler_imgs/epoch5.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/3">
+                            <p class="text-gray-700">Epoch 10</p>
+                            <img src="./no_scheduler_imgs/epoch10.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                </section>
             </div>
         </div>
     </div>

@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- KaTeX CSS + JS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" />
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+      onload="renderMathInElement(document.body,{
+        delimiters:[
+          {left:'$$', right:'$$', display:true},
+          {left:'\\[', right:'\\]', display:true},
+          {left:'$', right:'$', display:false},
+          {left:'\\(', right:'\\)', display:false}
+        ],
+        throwOnError:false
+      });"></script>    
+    <title>My Portfolio - Project 5</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="flex justify-between items-center px-6 py-4 border-b border-gray-200">
+        <h2 class="text-2xl font-bold text-blue-600">CS180 Portfolio</h1>
+        <ul class="flex gap-6">
+        <li><a href="../index.html" class="hover:text-blue-600 transition">Home</a></li>
+        <li><a href="../0/index.html" class="hover:text-blue-600 transition">Project 0</a></li>
+        <li><a href="../1/index.html" class="hover:text-blue-600 transition">Project 1</a></li>
+        <li><a href="../2/index.html" class="hover:text-blue-600 transition">Project 2</a></li>
+        <li><a href="../3/index.html" class="hover:text-blue-600 transition">Project 3</a></li>
+        <li><a href="../4/index.html" class="hover:text-blue-600 transition">Project 4</a></li>
+        <li><a href="#" class="hover:text-blue-600 transition">Project 5</a></li>
+        </ul>
+    </nav>
+    <div class="m-8">
+        <div class="p-6 border-gray-400 bg-blue-600 rounded-lg m-6">
+            <h1 class="text-white text-4xl md:text-5xl font-bold text-center">Fun with Diffusion Models!</h1>
+        </div>
+        <p class="text-gray-700 text-center">
+            In this project, we play around with diffusion models!
+        </p>
+        <div class="p-4 border-gray-400 bg-green-600 rounded-lg m-4">
+            <h1 class="text-white text-3xl md:text-4xl font-bold text-center">Part 0: Setup</h1>
+        </div>
+        <div class="p-4 m-4">
+            <p class="text-gray-700">
+                Setting up the DeepFloyd IF diffusion model, I tested it out on a few prompts I came up with.
+            </p>
+            <ol class="list-decimal list-inside space-y-2 text-gray-700 ml-2 m-2">
+                <li>
+                    a watercolor style drawing of a baby emperor penguin sleepily sitting on ice
+                </li>
+                <li>
+                    a cute ball-shaped penguin stuffed animal sitting on a bed
+                </li>
+                <li>
+                    a house made out of jello
+                </li>
+            </ol>
+            <p class="text-gray-700">
+                I then generated embeddings for each of these prompts using the generator given.
+            </p>
+            <p class="text-gray-700">
+                Here are the results on num inference steps = 20. The top row are the images after
+                stage 1 (64x64), while the bottom row are the images after stage 2 (256x256).
+            </p>
+            <div class="py-6 ml-6 mr-6">
+                <section class="flex justify-center gap-2">
+                        <div class="text-center w-1/1">
+                            <img src="./part0_imgs/image.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                </section>
+            </div>
+            <p class="text-gray-700">
+                Here are the results on num inference steps = 50. The top row are the images after
+                stage 1 (64x64), while the bottom row are the images after stage 2 (256x256).
+            </p>
+            <div class="py-6 ml-6 mr-6">
+                <section class="flex justify-center gap-2">
+                        <div class="text-center w-1/1">
+                            <img src="./part0_imgs/image50.png"
+                                alt="INSERT IMAGE PLS"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                </section>
+            </div>
+        <div class="p-4 border-gray-400 bg-green-600 rounded-lg m-4">
+            <h1 class="text-white text-3xl md:text-4xl font-bold text-center">Part 1: Sampling Loops</h1>
+        </div>
+        <div class="p-4 m-4">
+            <h2 class="font-bold text-2xl">Part 1.1: Implementing the Forward Process</h2>
+            <p class="text-gray-700 m-2">
+                In this section, I implemented the forward diffusion process. This involves
+                adding Gaussian noise to an image over T time steps. At each time step t,
+                we compute the noisy image $x_t$ from the previous image $x_{t-1}$ using the formula:
+                $$x_t = \sqrt{1 - \alpha_t} x_{0} + \sqrt{1 - \alpha_t} \epsilon$$
+                where $\epsilon$ is sampled from a standard normal distribution, and $\alpha_t$
+                is a cumulative product gotten from stage_1.scheduler.alphas_cumprod.
+                <!--Here is the code I implemented:-->
+            </p>
+            <!--<pre class="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm">
+            <code class="language-python">
+            def forward(im, t):
+                """
+                Args:
+                    im : torch tensor of size (1, 3, 64, 64) representing the clean image
+                    t : integer timestep
+
+                Returns:
+                    im_noisy : torch tensor of size (1, 3, 64, 64) representing the noisy image at timestep t
+                """
+                with torch.no_grad():
+                    # ===== your code here! ====
+                    eps = torch.randn_like(im)
+                    alphas_cumprod_t = alphas_cumprod[t]
+                    im_noisy = torch.sqrt(alphas_cumprod_t) * im + torch.sqrt(1 - alphas_cumprod_t) * eps
+
+                    # ===== end of code ====
+                return im_noisy
+            </code>
+            </pre>-->
+            <p class="text-gray-700 m-2">
+                Here are some results of adding noise to an 64x64 image (Campanile) at different time steps
+                (250, 500, 750).
+            </p>
+            <div class="py-6 mx-6 my-2">
+                <section class="flex justify-center gap-2">
+                        <div class="text-center w-1/4">
+                            <p>Original</p>
+                            <img src="./part1.1-1.2_imgs/campanile.png"
+                                alt="None"
+                                class=" w-full h-auto rounded-lg shadow-md" />
+                            
+                        </div>
+                        <div class="text-center w-1/4">
+                            <p>t=250</p>
+                            <img src="./part1.1-1.2_imgs/noise_250.png"
+                                alt="None"
+                                class="w-full h-auto rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/4">
+                            <p>t=500</p>
+                            <img src="./part1.1-1.2_imgs/noise_500.png"
+                                alt="None"
+                                class="w-full h-auto rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/4">
+                            <p>t=750</p>
+                            <img src="./part1.1-1.2_imgs/noise_750.png"
+                                alt="None"
+                                class="w-full h-auto rounded-lg shadow-md" />
+                        </div>
+                </section>
+            </div>
+            <h2 class="font-bold text-2xl">Part 1.2: Classical Denoising</h2>
+            <p class="text-gray-700 m-2">
+                As a comparison and baseline for the later denoising methods,
+                I implemented a classical denoising method using Gaussian blur filtering (lowpass).
+                I used a kernel size of 3, 5, and 7 for time steps 250, 500, and 750 respectively.
+                These kernel sizes could be tuned further for marginally better results.
+            </p>
+            <div class="py-6 mx-6 my-2">
+                <section class="flex justify-center gap-2">
+                        <div class="text-center w-1/4">
+                            <p>t=250</p>
+                            <img src="./part1.1-1.2_imgs/noise_250.png"
+                                alt="None"
+                                class="w-full h-auto rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/4">
+                            <p>t=500</p>
+                            <img src="./part1.1-1.2_imgs/noise_500.png"
+                                alt="None"
+                                class="w-full h-auto rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/4">
+                            <p>t=750</p>
+                            <img src="./part1.1-1.2_imgs/noise_750.png"
+                                alt="None"
+                                class="w-full h-auto rounded-lg shadow-md" />
+                        </div>
+                </section>
+                <section class="flex justify-center gap-2">
+                        <div class="text-center w-1/4">
+                            <p>t=250</p>
+                            <img src="./part1.1-1.2_imgs/gaussian_250.png"
+                                alt="None"
+                                class="w-full h-auto rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/4">
+                            <p>t=500</p>
+                            <img src="./part1.1-1.2_imgs/gaussian_500.png"
+                                alt="None"
+                                class="w-full h-auto rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/4">
+                            <p>t=750</p>
+                            <img src="./part1.1-1.2_imgs/gaussian_750.png"
+                                alt="None"
+                                class="w-full h-auto rounded-lg shadow-md" />
+                        </div>
+                </section>
+            </div>
+            <h2 class="font-bold text-2xl">Part 1.3: One-Step Denoising</h2>
+            <p class="text-gray-700 m-2">
+                We can use the stage 1 pretrained diffusion model to perform one-step denoising.
+            </p>
+            <ol class="list-decimal list-inside space-y-2 text-gray-700 ml-2 m-2">
+                <li>
+                    Add noise with the forward method implemented in 1.1.
+                </li>
+                <li>
+                    Estimate noise by passing the noisy image and time step to the pretrained model.
+                </li>
+                <li>
+                    Remove the estimated noise from the noisy image to get the denoised image.
+                </li>
+                <li>
+                    Compare the denoised image with the original image.
+                </li>
+            </ol>
+            <div class="py-6 mx-6 my-2">
+                <section class="flex justify-center gap-2">
+                        <div class="text-center w-1/4">
+                            <p>t=250</p>
+                            <img src="./part1.1-1.2_imgs/noise_250.png"
+                                alt="None"
+                                class="w-full h-auto rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/4">
+                            <p>t=500</p>
+                            <img src="./part1.1-1.2_imgs/noise_500.png"
+                                alt="None"
+                                class="w-full h-auto rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/4">
+                            <p>t=750</p>
+                            <img src="./part1.1-1.2_imgs/noise_750.png"
+                                alt="None"
+                                class="w-full h-auto rounded-lg shadow-md" />
+                        </div>
+                </section>
+                <section class="flex justify-center gap-2">
+                        <div class="text-center w-1/4">
+                            <p>t=250</p>
+                            <img src="./part1.3_imgs/250.png"
+                                alt="None"
+                                class="w-full h-auto rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/4">
+                            <p>t=500</p>
+                            <img src="./part1.3_imgs/500.png"
+                                alt="None"
+                                class="w-full h-auto rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/4">
+                            <p>t=750</p>
+                            <img src="./part1.3_imgs/750.png"
+                                alt="None"
+                                class="w-full h-auto rounded-lg shadow-md" />
+                        </div>
+                </section>
+            </div>
+            <h2 class="font-bold text-2xl">Part 1.4: Iterative Denoising</h2>
+            <p class="text-gray-700 m-2">
+                We can use the one-step denoiser many times to create an iterative denoiser.
+                This is done by combining the estimate from the one-step with random noise and the current image.
+                The iterative denoiser is overall more clear and contains more detail than the one-step.
+            </p>
+            <div class="py-4 mx-6 my-2">
+                <section class="flex justify-center gap-2 py-3">
+                        <div class="text-center w-1/5">
+                            <p>Noisy Campanile: t=90</p>
+                            <img src="./part1.4_imgs/iter_90.png"
+                                alt="None"
+                                class="w-full h-auto rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/5">
+                            <p>Noisy Campanile: t=240</p>
+                            <img src="./part1.4_imgs/iter_240.png"
+                                alt="None"
+                                class="w-full h-auto rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/5">
+                            <p>Noisy Campanile: t=390</p>
+                            <img src="./part1.4_imgs/iter_390.png"
+                                alt="None"
+                                class="w-full h-auto rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/5">
+                            <p>Noisy Campanile: t=540</p>
+                            <img src="./part1.4_imgs/iter_540.png"
+                                alt="None"
+                                class="w-full h-auto rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/5">
+                            <p>Noisy Campanile: t=690</p>
+                            <img src="./part1.4_imgs/iter_690.png"
+                                alt="None"
+                                class="w-full h-auto rounded-lg shadow-md" />
+                        </div>
+                </section>
+                <section class="flex justify-center gap-2 py-3">
+                        <div class="text-center w-1/4">
+                            <p>Original</p>
+                            <img src="./part1.1-1.2_imgs/campanile.png"
+                                alt="None"
+                                class="w-full h-auto rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/4">
+                            <p>Iteratively Denoised</p>
+                            <img src="./part1.4_imgs/iter_final.png"
+                                alt="None"
+                                class="w-full h-auto rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/4">
+                            <p>One-Step</p>
+                            <img src="./part1.4_imgs/one_step.png"
+                                alt=""
+                                class="w-full h-auto rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/4">
+                            <p>Gaussian Blurred</p>
+                            <img src="./part1.1-1.2_imgs/gaussian_750.png"
+                                alt="None"
+                                class="w-full h-auto rounded-lg shadow-md" />
+                        </div>
+                </section>
+            </div>
+            <h2 class="font-bold text-2xl">Part 1.5: Diffusion Model Sampling</h2>
+            <p class="text-gray-700 m-2">
+                Using the iterative denoiser, we can pass in random noise
+                with a prompt to sample the model and generate images.
+                We use the prompt "a high quality photo".
+            </p>
+            <div class="py-6 mx-6 my-2">
+                <section class="flex justify-center gap-2">
+                        <div class="text-center w-1/5">
+                            <p>Sample 1</p>
+                            <img src="./part1.5_imgs/image0.png"
+                                alt="None"
+                                class="w-full h-auto rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/5">
+                            <p>Sample 2</p>
+                            <img src="./part1.5_imgs/image1.png"
+                                alt="None"
+                                class="w-full h-auto rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/5">
+                            <p>Sample 3</p>
+                            <img src="./part1.5_imgs/image2.png"
+                                alt="None"
+                                class="w-full h-auto rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/5">
+                            <p>Sample 4</p>
+                            <img src="./part1.5_imgs/image3.png"
+                                alt="None"
+                                class="w-full h-auto rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/5">
+                            <p>Sample 5</p>
+                            <img src="./part1.5_imgs/image4.png"
+                                alt="None"
+                                class="w-full h-auto rounded-lg shadow-md" />
+                        </div>
+                </section>
+            </div>
+            <h2 class="font-bold text-2xl">Part 1.6: Classifier-Free Guidance (CFG)</h2>
+            <p class="text-gray-700 m-2">
+                We improve our iterative denoiser to use both a unconditioned and conditioned noise
+                estimate. The null/unconditioned prompt is just "", while the conditioned one
+                is the input prompt "a high quality photo". We choose gamma = 7 for the strength of the
+                CFG according to the equation outlined in the spec. Here are the results
+            </p>
+            <div class="py-6 mx-6 my-2">
+                <section class="flex justify-center gap-2">
+                        <div class="text-center w-1/5">
+                            <p>Sample 1 with CFG</p>
+                            <img src="./part1.6_imgs/image0.png"
+                                alt="None"
+                                class="w-full h-auto rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/5">
+                            <p>Sample 2 with CFG</p>
+                            <img src="./part1.6_imgs/image1.png"
+                                alt="None"
+                                class="w-full h-auto rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/5">
+                            <p>Sample 3 with CFG</p>
+                            <img src="./part1.6_imgs/image2.png"
+                                alt="None"
+                                class="w-full h-auto rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/5">
+                            <p>Sample 4 with CFG</p>
+                            <img src="./part1.6_imgs/image3.png"
+                                alt="None"
+                                class="w-full h-auto rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/5">
+                            <p>Sample 5 with CFG</p>
+                            <img src="./part1.6_imgs/image4.png"
+                                alt="None"
+                                class="w-full h-auto rounded-lg shadow-md" />
+                        </div>
+                </section>
+            </div>
+            <h2 class="font-bold text-2xl">Part 1.7: Image-Image Translation</h2>
+            <p class="text-gray-700 m-2">
+                We can do image-image translation using the same algorithm as above (with CFG).
+                Rather than pass in a pure noisy image, we can just pass in an image, and then
+                noise and denoise. The more noise, the more edits. Here we show edits of the
+                Campanile, a penguin ball stuffed animal, and my own professional headshot at
+                noise levels 1, 3, 5, 7, 10, and 20. These numbers refer to the starting index
+                of steps for the iterative algorithm.
+            </p>
+            <div class="py-3 mx-6 my-2">
+                <section class="flex justify-center gap-2 py-2">
+                        <div class="text-center w-full">
+                            <img src="./part1.7_imgs/image-image_camp.png"
+                                alt="None"
+                                class="w-full h-auto rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/5">
+                            <p>Campanile</p>
+                            <img src="./part1.1-1.2_imgs/campanile.png"
+                                alt="None"
+                                class="w-full h-auto rounded-lg shadow-md" />
+                        </div>
+                </section>
+                <section class="flex justify-center gap-2 py-2">
+                        <div class="text-center w-full">
+                            <img src="./part1.7_imgs/image-image_penguin.png"
+                                alt="None"
+                                class="w-full h-auto rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/5">
+                            <p>Penguin</p>
+                            <img src="./part1.7_imgs/penguin.png"
+                                alt="None"
+                                class="w-full h-auto rounded-lg shadow-md" />
+                        </div>
+                </section>
+                <section class="flex justify-center gap-2 py-2">
+                        <div class="text-center w-full">
+                            <img src="./part1.7_imgs/image-image_headshot.png"
+                                alt="None"
+                                class="w-full h-auto rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/5">
+                            <p>Marcus Koh</p>
+                            <img src="./part1.7_imgs/headshot.png"
+                                alt="None"
+                                class="w-full h-auto rounded-lg shadow-md" />
+                        </div>
+                </section>
+            </div>
+            <h2 class="font-bold text-2xl">Part 1.7.1: Editing Hand-drawn</h2>
+            <p class="text-gray-700 m-2">
+                Now we experiment some more on nonrealistic images (aka drawings/sketches)!
+                The first image (unicorn) is from the web, while the other two are drawn by me.
+            </p>
+            <div class="py-3 mx-6 my-2">
+                <section class="flex justify-center gap-2 py-2">
+                        <div class="text-center w-full">
+                            <img src="./part1.7_imgs/image-image_unicorn.png"
+                                alt="None"
+                                class="w-full h-auto rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/5">
+                            <p>Unicorn sketch</p>
+                            <img src="./part1.7_imgs/unicorn.png"
+                                alt="None"
+                                class="w-full h-auto rounded-lg shadow-md" />
+                        </div>
+                </section>
+                <section class="flex justify-center gap-2 py-2">
+                        <div class="text-center w-full">
+                            <img src="./part1.7_imgs/image-image_drawing1.png"
+                                alt="None"
+                                class="w-full h-auto rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/5">
+                            <p>House sketch</p>
+                            <img src="./part1.7_imgs/drawing1.png"
+                                alt="None"
+                                class="w-full h-auto rounded-lg shadow-md" />
+                        </div>
+                </section>
+                <section class="flex justify-center gap-2 py-2">
+                        <div class="text-center w-full">
+                            <img src="./part1.7_imgs/image-image_drawing2.png"
+                                alt="None"
+                                class="w-full h-auto rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/5">
+                            <p>Penguin sketch</p>
+                            <img src="./part1.7_imgs/drawing2.png"
+                                alt="None"
+                                class="w-full h-auto rounded-lg shadow-md" />
+                        </div>
+                </section>
+            </div>
+            <h2 class="font-bold text-2xl">Part 1.7.2: Inpainting</h2>
+            <p class="text-gray-700 m-2">
+                We use the same algorithm, but only on a portion of the image to create inpainting.
+                We can do this by masking out parts of the image to replace it
+                with the original throughout the denoiser.
+            </p>
+            <div class="py-3 mx-6 my-2">
+                <section class="flex justify-center gap-2 py-2">
+                        <div class="text-center w-1/2">
+                            <img src="./part1.7_imgs/mask_camp.png"
+                                alt="None"
+                                class="w-full h-auto rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/5">
+                            <p>Campanile</p>
+                            <img src="./part1.7_imgs/inpainted_camp.png"
+                                alt="None"
+                                class="w-full h-auto rounded-lg shadow-md" />
+                        </div>
+                </section>
+                <section class="flex justify-center gap-2 py-2">
+                        <div class="text-center w-1/2">
+                            <img src="./part1.7_imgs/mask_penguin_nose.png"
+                                alt="None"
+                                class="w-full h-auto rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/5">
+                            <p>Penguin</p>
+                            <img src="./part1.7_imgs/inpainted_penguin_nosealt.png"
+                                alt="None"
+                                class="w-full h-auto rounded-lg shadow-md" />
+                        </div>
+                </section>
+                <section class="flex justify-center gap-2 py-2">
+                        <div class="text-center w-1/2">
+                            <img src="./part1.7_imgs/mask_headshot.png"
+                                alt="None"
+                                class="w-full h-auto rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/5">
+                            <p>Marcus Koh</p>
+                            <img src="./part1.7_imgs/inpainted_headshot.png"
+                                alt="None"
+                                class="w-full h-auto rounded-lg shadow-md" />
+                        </div>
+                </section>
+            </div>
+            <h2 class="font-bold text-2xl">Part 1.7.3: Text-Condition Image-to-image translation</h2>
+            <p class="text-gray-700 m-2">
+                Rather than using "a high quality photo" as the prompt,
+                we use our own prompts
+            </p>
+            <div class="py-3 mx-6 my-2">
+                <section class="flex justify-center gap-2 py-2">
+                        <div class="text-center w-full">
+                            <p>Rocket Ship</p>
+                            <img src="./part1.7_imgs/text_camp.png"
+                                alt="None"
+                                class="w-full h-auto rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/5">
+                            <p>Campanile</p>
+                            <img src="./part1.1-1.2_imgs/campanile.png"
+                                alt="None"
+                                class="w-full h-auto rounded-lg shadow-md" />
+                        </div>
+                </section>
+                <section class="flex justify-center gap-2 py-2">
+                        <div class="text-center w-full">
+                            <p>Bowling Ball</p>
+                            <img src="./part1.7_imgs/text_penguin.png"
+                                alt="None"
+                                class="w-full h-auto rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/5">
+                            <p>Penguin</p>
+                            <img src="./part1.7_imgs/penguin.png"
+                                alt="None"
+                                class="w-full h-auto rounded-lg shadow-md" />
+                        </div>
+                </section>
+                <section class="flex justify-center gap-2 py-2">
+                        <div class="text-center w-full">
+                            <p>Statue</p>
+                            <img src="./part1.7_imgs/text_headshot.png"
+                                alt="None"
+                                class="w-full h-auto rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/5">
+                            <p>Marcus Koh</p>
+                            <img src="./part1.7_imgs/headshot.png"
+                                alt="None"
+                                class="w-full h-auto rounded-lg shadow-md" />
+                        </div>
+                </section>
+            </div>
+            <h2 class="font-bold text-2xl">Part 1.8: Visual Anagrams</h2>
+            <p class="text-gray-700 m-2">
+                We now update the algorithm to two noise estimates: one for right side up, and one for upside down.
+                Using this, we can create visual anagrams, which show two different prompts when flipped
+            </p>
+            <div class="py-3 mx-6 my-2">
+                <section class="flex justify-center gap-2 py-3">
+                        <div class="text-center w-full">
+                            <p class="text-xl py-1">An ink illustration of a human face | An ink illustration of a tree</p>
+                            <img src="./part1.8_imgs/man_tree.png"
+                                alt="None"
+                                class="w-full h-auto rounded-lg shadow-md" />
+                        </div>
+                </section>
+                <section class="flex justify-center gap-2 py-3">
+                        <div class="text-center w-full">
+                            <p class="text-xl py-1">An old painting of an old man | An oil painting of people around a campfire</p>
+                            <img src="./part1.8_imgs/.png"
+                                alt="None"
+                                class="w-full h-auto rounded-lg shadow-md" />
+                        </div>
+                </section>
+            </div>
+            <h2 class="font-bold text-2xl">Part 1.9: Hybrid Images</h2>
+            <p class="text-gray-700 m-2">
+                We now update the algorithm to two noise estimates: one for low frequencies, and one for high frequencies.
+                Using s, we can create hybrid, which show two different prompts when seen up close or far away
+            </p>
+            <div class="py-3 mx-6 my-2">
+                <section class="flex justify-center gap-2 py-3">
+                        <div class="text-center w-full">
+                            <p class="text-xl py-1">DO A SECOND ONE</p>
+                            <img src="./part1.9_imgs/.png"
+                                alt="None"
+                                class="w-full h-auto rounded-lg shadow-md" />
+                        </div>
+                </section>
+                <section class="flex justify-center gap-2 py-3">
+                        <div class="text-center w-full">
+                            <p class="text-xl py-1">DO YOUR OWN</p>
+                            <img src="./part1.9_imgs/.png"
+                                alt="None"
+                                class="w-full h-auto rounded-lg shadow-md" />
+                        </div>
+                </section>
+            </div>
+        </div>
+        <div class="p-4 border-gray-400 bg-green-600 rounded-lg m-4">
+            <h1 class="text-white text-3xl md:text-4xl font-bold text-center">Part B: Flow Matching from Scratch!</h1>
+        </div>
+        <div class="p-4 m-4">
+            <h2 class="font-bold text-2xl">Part 1.1-1.2: Implementing a UNet and Generating training data</h2>
+            <p class="text-gray-700 m-2">
+                In this section, we build a denoiser neural network, a MLP called a UNet, starting with a one-step.
+                To build the model, the diagram below was followed exactly
+            </p>
+            <section class="flex justify-center gap-2">
+                <div class="text-center w-1/2 mx-6 my-2">
+                        <img src="./partB1_imgs/image.png"
+                            alt="None"
+                            class="rounded-lg shadow-md" />
+                    </div>
+            </section>
+            <p class="text-gray-700 m-2">
+                To create training pairs, we need a way add noise.
+                We can choose different values for $\sigma$ to decrease or increase the noise
+                with the equation $$z = x + \sigma \epsilon$$ where $\epsilon$ is sampled
+                from a standard Normal distribution
+                Below, we show 0.0, 0.2, 0.4, 0.5, 0.6, 0.8, and 1.0 on the campanile as an example.
+            </p>
+            <div class="py-6 mx-6 my-2">
+                <section class="flex justify-center gap-2">
+                        <div class="text-center w-1/7">
+                            <p>0.0</p>
+                            <img src="./partB1_imgs/camp0.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/7">
+                            <p>0.2</p>
+                            <img src="./partB1_imgs/camp2.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/7">
+                            <p>0.4</p>
+                            <img src="./partB1_imgs/camp4.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/7">
+                            <p>0.5</p>
+                            <img src="./partB1_imgs/camp5.png"
+                                alt="NEEDS IMAGE"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/7">
+                            <p>0.6</p>
+                            <img src="./partB1_imgs/camp6.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/7">
+                            <p>0.8</p>
+                            <img src="./partB1_imgs/camp8.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/7">
+                            <p>1.0</p>
+                            <img src="./partB1_imgs/camp10.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                </section>
+            </div>
+            <h2 class="font-bold text-2xl p-2 m-2">Part 1.2.1: Training the UNet</h2>
+            <p class="text-gray-700 m-2">
+                After creating a torch dataset and dataloader, we trained the one-step UNet with
+                learning rate = 1e-4, hidden dimension = 128, batch size = 256, and $sigma$ = 0.5 for 5 epochs.
+                Here was the training loss
+            </p>
+            <div class="py-6 mx-6 my-2">
+                <section class="flex justify-center gap-2">
+                        <div class="text-center w-1/2">
+                            <img src="./partB1.2_imgs/train_loss.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                </section>
+            </div>
+            <p class="text-gray-700 m-2">
+                Here are the results after the first and 5th epoch with noise level 0.5
+            </p>
+            <div class="py-6 mx-4 my-2">
+                <section class="flex justify-center gap-6">
+                        <div class="text-center w-1/2">
+                            <p>3 test samples after Epoch 1</p>
+                            <img src="./partB1.2_imgs/epoch1.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/2">
+                            <p>3 test samples after Epoch 5</p>
+                            <img src="./partB1.2_imgs/epoch5.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                </section>
+            </div>
+            <h2 class="font-bold text-2xl p-2 m-2">Part 1.2.2: Out-of-Distribution Testing</h2>
+            <p class="text-gray-700 m-2">
+                With a UNet trained on $\sigma = 0.5$, what happens if we see the results
+                on different noise levels? Here are results for 0.0, 0.2, 0.4, 0.5, 0.6, 0.8, and 1.0.
+                For 0.6 and higher, there are visible artifacts in the denoised image.
+            </p>
+            <div class="py-6 mx-6 my-2">
+                <section class="flex justify-center gap-2">
+                    <div class="text-center w-1/3">
+                        <p>0.0</p>
+                        <img src="./partB1.2_imgs/noise0.png"
+                            alt="None"
+                            class="rounded-lg shadow-md" />
+                    </div>
+                    <div class="text-center w-1/3">
+                        <p>0.2</p>
+                        <img src="./partB1.2_imgs/noise2.png"
+                            alt="None"
+                            class="rounded-lg shadow-md" />
+                    </div>\
+                    <div class="text-center w-1/3">
+                        <p>0.4</p>
+                        <img src="./partB1.2_imgs/noise4.png"
+                            alt="None"
+                            class="rounded-lg shadow-md" />
+                    </div>
+                </section>
+                <section class="flex justify-center gap-2">
+                    <div class="text-center w-1/3">
+                        <p>0.5</p>
+                        <img src="./partB1.2_imgs/noise5.png"
+                            alt="NEEDS IMAGE"
+                            class="rounded-lg shadow-md" />
+                    </div>
+                
+                    <div class="text-center w-1/3">
+                        <p>0.6</p>
+                        <img src="./partB1.2_imgs/noise6.png"
+                            alt="None"
+                            class="rounded-lg shadow-md" />
+                    </div>
+                </section>
+                <section class="flex justify-center gap-2">
+                    <div class="text-center w-1/3">
+                        <p>0.8</p>
+                        <img src="./partB1.2_imgs/noise8.png"
+                            alt="None"
+                            class="rounded-lg shadow-md" />
+                    </div>
+                    <div class="text-center w-1/3">
+                        <p>1.0</p>
+                        <img src="./partB1.2_imgs/noise10.png"
+                            alt="None"
+                            class="rounded-lg shadow-md" />
+                    </div>
+                </section>
+            </div>
+            <h2 class="font-bold text-2xl p-2 m-2">Part 1.2.3: Denoising pure noise</h2>
+            <p class="text-gray-700 m-2">
+                We now repeat the same training process, but denoise on pure noise.
+                We can see that the generated outputs is a blur, almost like a fusion of 
+                every number together. This is happening because we have almost the same
+                inputs (pure noise), being trained to map to all 10 different outputs,
+                so there is no relationship of input to output. Therefore, the lowest
+                error becomes a blend of all the digits. However, this does pick up
+                on some common patterns between all digits. For example, the 
+                right side of the blur is stronger than the left side since most digits
+                have more substance on the right side than the left side.
+            </p>
+            <div class="py-6 mx-6 my-2">
+                <section class="flex justify-center gap-2">
+                        <div class="text-center w-1/2">
+                            <img src="./partB1.2_imgs/pure_train_loss.png"
+                                alt="NEED TO ADD"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                </section>
+            </div>
+            <p class="text-gray-700 m-2">
+                Here are the results after the first and 5th epoch with noise level 0.5
+            </p>
+            <div class="py-6 mx-4 my-2">
+                <section class="flex justify-center gap-6">
+                        <div class="text-center w-1/2">
+                            <p>3 test samples after Epoch 1</p>
+                            <img src="./partB1.2_imgs/pure_epoch1.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                        <div class="text-center w-1/2">
+                            <p>3 test samples after Epoch 5</p>
+                            <img src="./partB1.2_imgs/pure_epoch5.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                </section>
+            </div>
+            <h2 class="font-bold text-2xl p-2 m-2">Part 2.6: Training with your own data</h2>
+            <p class="text-gray-700 m-2">
+                In this section, we use the same method to train on our own captured dataset.
+                One difference from the previous section is that the image resolution is significantly
+                higher (over 10x), so I downscale the images when creating the dataset to save
+                gpu memory and training time. Due to this,
+                the focal lengths in the intrinsic matrix must also be downscaled by the same factor.
+                For my data, I downscaled by 2x for training, and downscaled another 4x only when
+                rendering images to png. Another difference is that I trained for 10000 iterations,
+                double the previous section. All other parameters stayed the same
+            </p>
+            <div class="py-6 mx-6 my-2">
+                <section class="flex justify-center gap-2">
+                        <div class="text-center w-1/6">
+                            <img src="./airpod_images/step_0000.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                            <p class="text-gray-700">Training Step 0</p>
+                        </div>
+                        <div class="text-center w-1/6">
+                            <img src="./airpod_images/train_step_0100.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                            <p class="text-gray-700">Training Step 100</p>
+                        </div>
+                        <div class="text-center w-1/6">
+                            <img src="./airpod_images/train_step_0500.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                            <p class="text-gray-700">Training Step 500</p>
+                        </div>
+                        <div class="text-center w-1/6">
+                            <img src="./airpod_images/train_step_1000.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                            <p class="text-gray-700">Training Step 1000</p>
+                        </div>
+                        <div class="text-center w-1/6">
+                            <img src="./airpod_images/train_step_3000.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                            <p class="text-gray-700">Training Step 3000</p>
+                        </div>
+                        <div class="text-center w-1/6">
+                            <img src="./airpod_images/train_step_10000.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                            <p class="text-gray-700">Training Step 10000</p>
+                        </div>
+                </section>
+                <p class="text-gray-700 m-2">
+                    Here are the validation images at time steps. 
+                </p>
+                <section class="flex justify-center gap-2 my-2">
+                        <div class="text-center w-1/6">
+                            <img src="./airpod_images/val_step_0100_img1.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                            <p class="text-gray-700">Training Step 100</p>
+                        </div>
+                        <div class="text-center w-1/6">
+                            <img src="./airpod_images/val_step_0500_img1.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                            <p class="text-gray-700">Training Step 500</p>
+                        </div>
+                        <div class="text-center w-1/6">
+                            <img src="./airpod_images/val_step_1000_img1.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                            <p class="text-gray-700">Training Step 1000</p>
+                        </div>
+                        <div class="text-center w-1/6">
+                            <img src="./airpod_images/val_step_2000_img1.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                            <p class="text-gray-700">Training Step 2000</p>
+                        </div>
+                        <div class="text-center w-1/6">
+                            <img src="./airpod_images/val_step_5000_img1.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                            <p class="text-gray-700">Training Step 5000</p>
+                        </div>
+                        <div class="text-center w-1/6">
+                            <img src="./airpod_images/val_step_10000_img1.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                            <p class="text-gray-700">Training Step 10000</p>
+                        </div>
+                </section>
+                <p class="text-gray-700 m-2">Here are the PSNR curves at time steps</p>
+                <section class="flex justify-center gap-2 my-2">
+                        <div class="text-center w-1/2">
+                            <img src="./airpod_images/psnr_curve_train.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                            <p class="text-gray-700">Training PSNR</p>
+                        </div>
+                        <div class="text-center w-1/2">
+                            <img src="./airpod_images/psnr_curve_val.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                            <p class="text-gray-700">Validation PSNR</p>
+                        </div>
+                </section>
+                <p class="text-gray-700 m-2">Here is the loss training curve</p>
+                <section class="flex justify-center gap-2 my-2">
+                        <div class="text-center w-1/2">
+                            <img src="./airpod_images/loss_curve.png"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                            <p class="text-gray-700">Training Loss Curve</p>
+                        </div>
+                </section>
+                <p class="text-gray-700 m-2">
+                    Here is the final gif render from running inference on the test set
+                    with the trained model.
+                </p>
+                <section class="flex justify-center gap-2 my-2">
+                        <div class="text-center w-3/1">
+                            <img src="./airpod_images/orbit_looping.gif"
+                                alt="None"
+                                class="rounded-lg shadow-md" />
+                        </div>
+                </section>
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>
